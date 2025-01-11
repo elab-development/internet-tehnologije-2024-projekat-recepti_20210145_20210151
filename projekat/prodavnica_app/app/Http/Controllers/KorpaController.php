@@ -20,6 +20,7 @@ class KorpaController extends Controller
             'proizvod_id' => 'required|exists:proizvods,id',
             'kolicina' => 'required|integer|min:1',
         ]);
+       
 
         $korpa = auth()->user()->korpa;
         if (!$korpa) {
@@ -31,6 +32,10 @@ class KorpaController extends Controller
         $korpa->proizvodi()->syncWithoutDetaching([
             $proizvod->id => ['kolicina_proizvoda' => $validated['kolicina']],
         ]);
+         //Proveravamo dostupnu kolicinu proizvoda
+         if ($proizvod->kolicina < $validated['kolicina']) {
+            return response()->json(['message' => 'Proizvoda nema na stanju.'], 400);
+        }
 
         $ukupnaCena = $korpa->ukupna_cena + ($proizvod->cena * $validated['kolicina']);
         $korpa->update(['ukupna_cena' => $ukupnaCena]);
