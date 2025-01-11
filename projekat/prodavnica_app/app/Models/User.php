@@ -47,4 +47,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function korpa()
+    {
+        return $this->hasOne(Korpa::class, 'user_id');
+    }
 }

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('korpas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id'); // Povezivanje sa korisnikom
+            $table->decimal('ukupna_cena', 8, 2)->default(0); // Ukupna cena
+            $table->enum('status', ['aktivan', 'kompletan', 'otkazan'])->default('aktivan');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

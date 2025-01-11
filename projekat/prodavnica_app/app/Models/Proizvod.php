@@ -20,4 +20,10 @@ class Proizvod extends Model
                 ->as('proizvod_recept')
                 ->withTimestamps();
     }
+    public function korpe()
+    {
+        return $this->belongsToMany(Korpa::class, 'korpa_proizvod')
+                    ->withPivot('kolicina_proizvoda')
+                    ->withTimestamps();
+    }
 }
