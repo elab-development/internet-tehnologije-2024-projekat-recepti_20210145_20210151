@@ -6,6 +6,7 @@ use App\Http\Controllers\KupovinaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\Auth\LogInController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\ReceptController;
 use App\Http\Controllers\KorpaController;
@@ -18,6 +19,9 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', [ApiRegisterController::class, 'register']);
 Route::post('/login', [LogInController::class, 'login']);
 Route::post('/logout', [LogInController::class, 'logout'])->middleware('auth:sanctum');
+//Resetovanhje lozinke
+Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 
 //Proizvod
 Route::middleware('auth:api')->post('/proizvodi', [ProductController::class, 'store']);
