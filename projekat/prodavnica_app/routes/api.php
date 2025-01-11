@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\Auth\LogInController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use Illuminate\Support\Facades\Password;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\ReceptController;
 use App\Http\Controllers\KorpaController;
@@ -20,6 +21,12 @@ Route::post('/register', [ApiRegisterController::class, 'register']);
 Route::post('/login', [LogInController::class, 'login']);
 Route::post('/logout', [LogInController::class, 'logout'])->middleware('auth:sanctum');
 //Resetovanhje lozinke
+
+// Dodavanje rute za resetovanje lozinke
+Route::get('/reset-password/{token}', function ($token) {
+    return response()->json(['message' => 'Ovo je ruta za resetovanje lozinke sa tokenom: ' . $token]);
+})->name('password.reset');
+
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 
