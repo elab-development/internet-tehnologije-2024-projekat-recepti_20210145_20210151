@@ -43,12 +43,30 @@ class KorpaController extends Controller
         $validated = $request->validate([
             'proizvod_id' => 'required|exists:proizvods,id',
         ]);
-
+    
         $korpa = auth()->user()->korpa;
+    
         if ($korpa) {
-            $korpa->proizvodi()->detach($validated['proizvod_id']);
+            // Pronađi proizvod u pivot tabeli
+            $proizvod = $korpa->proizvodi()->where('proizvod_id', $validated['proizvod_id'])->first();
+    
+            if ($proizvod) {
+                // Izračunaj novu cenu nakon uklanjanja proizvoda
+                $novaCena = $korpa->ukupna_cena - ($proizvod->pivot->kolicina_proizvoda * $proizvod->cena);
+    
+                // Ažuriraj ukupnu cenu korpe
+                $korpa->update(['ukupna_cena' => max($novaCena, 0)]);
+    
+                // Ukloni proizvod iz pivot tabele
+                $korpa->proizvodi()->detach($validated['proizvod_id']);
+            }
         }
-
+    
+        // Proveri da li je korpa sada prazna i ukloni je ako jeste
+        if ($korpa && $korpa->proizvodi()->count() === 0) {
+            $korpa->delete();
+        }
+    
         return response()->json(['message' => 'Proizvod uklonjen iz korpe.']);
     }
 
