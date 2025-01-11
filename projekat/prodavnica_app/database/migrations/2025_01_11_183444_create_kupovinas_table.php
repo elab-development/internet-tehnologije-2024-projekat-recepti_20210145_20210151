@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kupovinas', function (Blueprint $table) {
             $table->id('id_kupovine'); // Primarni ključ
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); // Veza sa postojećim User modelom
+            $table->foreignId('id_user')->constrained('users', 'id')->onDelete('cascade'); // Veza sa postojećim User modelom
             $table->decimal('ukupna_cena', 10, 2); // Ukupna cena kupovine
             $table->string('nacin_placanja'); // Način plaćanja (kartica, keš, itd.)
             $table->string('adresa_dostave'); // Adresa dostave

@@ -19,13 +19,17 @@ class KupovinaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_user' => 'required|exists:users,id',
             'ukupna_cena' => 'required|numeric',
             'nacin_placanja' => 'required|string',
             'adresa_dostave' => 'required|string',
         ]);
 
-        $kupovina = Kupovina::create($request->all());
+        $kupovina = Kupovina::create([
+            'id_user' => auth()->user()->id, // Automatski povezujemo sa trenutno prijavljenim korisnikom
+            'ukupna_cena' => $request->ukupna_cena,
+            'nacin_placanja' => $request->nacin_placanja,
+            'adresa_dostave' => $request->adresa_dostave,
+        ]);
 
         return response()->json($kupovina, 201); // Vraća novokreiranu kupovinu
     }
@@ -44,7 +48,7 @@ class KupovinaController extends Controller
         
         // Validacija i ažuriranje
         $request->validate([
-            'id_user' => 'required|exists:users,id',
+            //'id_user' => 'required|exists:users,id',
             'ukupna_cena' => 'required|numeric',
             'nacin_placanja' => 'required|string',
             'adresa_dostave' => 'required|string',

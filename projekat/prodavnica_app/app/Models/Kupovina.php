@@ -13,7 +13,7 @@ class Kupovina extends Model
     protected $primaryKey = 'id_kupovine'; // Primarni ključ
 
     protected $fillable = [
-        'user_id',
+        'id_user',
         'ukupna_cena',
         'nacin_placanja',
         'adresa_dostave',
@@ -22,7 +22,7 @@ class Kupovina extends Model
     // Veza sa User modelom (Kupovina pripada korisniku)
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     // Veza sa Proizvod modelom (Mnogi proizvodi mogu pripadati kupovini)
