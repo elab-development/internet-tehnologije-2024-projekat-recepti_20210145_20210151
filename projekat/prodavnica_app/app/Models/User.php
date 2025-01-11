@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Korpa::class, 'user_id');
     }
+    public function kupovinas()
+    {
+        return $this->hasMany(Kupovina::class, 'user_id');
+    }
 }

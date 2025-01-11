@@ -26,4 +26,11 @@ class Proizvod extends Model
                     ->withPivot('kolicina_proizvoda')
                     ->withTimestamps();
     }
+    public function kupovine()
+    {
+        return $this->belongsToMany(Kupovina::class, 'proizvod_kupovinas', 'proizvod_id', 'id_kupovine')
+                    ->withPivot('kolicina') // Pivot polje za količinu
+                    ->withTimestamps(); // Timestamps za pivot tabelu
+    }
+
 }

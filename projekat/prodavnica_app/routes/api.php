@@ -34,3 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/korpa', [KorpaController::class, 'viewCart']);
 });
 
+//Kupovina
+
+

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('ukupna_cena', 8, 2)->default(0); // Ukupna cena
             $table->enum('status', ['aktivan', 'kompletan', 'otkazan'])->default('aktivan');
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
