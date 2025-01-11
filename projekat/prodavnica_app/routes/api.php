@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\Auth\LogInController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\ReceptController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,3 +20,10 @@ Route::middleware('auth:api')->post('/proizvodi', [ProductController::class, 'st
 Route::get('/proizvodi/pretraga', [ProductController::class, 'search']); //get zahtev - podaci u URL
 //Prvo proveri da li je korisnik administrator, ako jeste moze da menja proizvod
 Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/proizvodi/{id}', [ProductController::class, 'update']);
+
+//Recept
+Route::middleware(['auth:sanctum', IsAdmin::class])->post('recepti', [ReceptController::class, 'store']);
+Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);
+Route::get('/recepti/pretraga', [ReceptController::class, 'pretraga']);
+
+

@@ -13,5 +13,11 @@ class Proizvod extends Model
         'dostupna_kolicina',
         'tip',
     ];
-    
+    public function recepti()
+    {
+        //return $this->belongsToMany(Recept::class, 'recept_proizvod');
+        return $this->belongsToMany(Recept::class)
+                ->as('proizvod_recept')
+                ->withTimestamps();
+    }
 }
