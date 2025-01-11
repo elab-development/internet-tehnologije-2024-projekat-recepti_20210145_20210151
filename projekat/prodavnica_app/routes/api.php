@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KupovinaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\Auth\LogInController;
@@ -35,5 +36,19 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 //Kupovina
+Route::middleware('auth:sanctum')->group(function () {
+    // Prikazivanje svih kupovina
+    Route::get('/kupovina', [KupovinaController::class, 'index']);
 
+    // Kreiranje nove kupovine
+    Route::post('/kupovina/store', [KupovinaController::class, 'store']);
 
+    // Prikazivanje jedne kupovine
+    Route::get('/kupovina/{id}', [KupovinaController::class, 'show']);
+
+    // Ažuriranje kupovine
+    Route::put('/kupovina/{id}', [KupovinaController::class, 'update']);
+
+    // Brisanje kupovine
+    Route::delete('/kupovina/{id}', [KupovinaController::class, 'destroy']);
+});
