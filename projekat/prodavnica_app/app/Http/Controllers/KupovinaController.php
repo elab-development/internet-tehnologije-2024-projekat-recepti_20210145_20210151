@@ -45,18 +45,26 @@ class KupovinaController extends Controller
     public function update(Request $request, $id)
     {
         $kupovina = Kupovina::findOrFail($id);
-        
-        // Validacija i ažuriranje
-        $request->validate([
-            //'id_user' => 'required|exists:users,id',
-            'ukupna_cena' => 'required|numeric',
-            'nacin_placanja' => 'required|string',
-            'adresa_dostave' => 'required|string',
-        ]);
-        
-        $kupovina->update($request->all());
 
-        return response()->json($kupovina);
+    // Validacija podataka (ne uključujemo 'id_user' jer se automatski dodeljuje)
+    $request->validate([
+        //'ukupna_cena' => 'required|numeric',
+        //'nacin_placanja' => 'required|string',
+        'adresa_dostave' => 'required|string',
+    ]);
+
+    // Dodela ID-a trenutno prijavljenog korisnika
+    $kupovina->id_user = auth()->user()->id;  // Automatski postavi ID prijavljenog korisnika
+
+    // Ažuriranje kupovine sa novim podacima
+    $kupovina->update([
+        'ukupna_cena' => $request->ukupna_cena,
+        'nacin_placanja' => $request->nacin_placanja,
+        'adresa_dostave' => $request->adresa_dostave,
+    ]);
+
+    // Vraćanje ažurirane kupovine
+    return response()->json($kupovina);
     }
 
     // Brisanje kupovine

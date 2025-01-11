@@ -38,4 +38,27 @@ class LogInController extends Controller
             ], 401);
         }
     }
+
+    public function logout(Request $request)
+    {
+        // Prvo proveravamo da li korisnik ima validan token
+        $user = Auth::user();
+
+        // Revoke (povuci) API token
+        if ($user) {
+            $user->tokens->each(function ($token) {
+                $token->delete();
+            });
+
+            // Uspešno odjavljivanje
+            return response()->json([
+                'message' => 'Uspešno ste se odjavili.'
+            ]);
+        }
+
+        // Ako korisnik nije prijavljen
+        return response()->json([
+            'message' => 'Korisnik nije prijavljen.'
+        ], 401);
+    }
 }

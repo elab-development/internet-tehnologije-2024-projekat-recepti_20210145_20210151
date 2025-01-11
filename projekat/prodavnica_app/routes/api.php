@@ -14,8 +14,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//Registracija i prijava
 Route::post('/register', [ApiRegisterController::class, 'register']);
 Route::post('/login', [LogInController::class, 'login']);
+Route::post('/logout', [LogInController::class, 'logout'])->middleware('auth:sanctum');
 
 //Proizvod
 Route::middleware('auth:api')->post('/proizvodi', [ProductController::class, 'store']);
@@ -47,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/kupovina/{id}', [KupovinaController::class, 'show']);
 
     // Ažuriranje kupovine
-    Route::put('/kupovina/{id}', [KupovinaController::class, 'update']);
+    Route::patch('/kupovina/{id}', [KupovinaController::class, 'update']);
 
     // Brisanje kupovine
     Route::delete('/kupovina/{id}', [KupovinaController::class, 'destroy']);
