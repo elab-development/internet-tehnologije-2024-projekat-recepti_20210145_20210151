@@ -12,21 +12,21 @@ class ProizvodSeeder extends Seeder
     {
         $proizvodi = [
             [
-                'naziv' => 'Jabuke',
+                'naziv' => 'nar',
                 'kategorija' => 'Voce',
                 'cena' => 120.50,
                 'dostupna_kolicina' => 100,
                 'tip' => 'organski',
             ],
             [
-                'naziv' => 'Krompir',
+                'naziv' => 'lubenica',
                 'kategorija' => 'Povrce',
                 'cena' => 80.00,
                 'dostupna_kolicina' => 200,
                 'tip' => 'neorganski',
             ],
             [
-                'naziv' => 'Jagode',
+                'naziv' => 'mango',
                 'kategorija' => 'Voce',
                 'cena' => 300.00,
                 'dostupna_kolicina' => 50,
