@@ -36,6 +36,11 @@ Route::get('/proizvodi/pretraga', [ProductController::class, 'search']); //get z
 //Prvo proveri da li je korisnik administrator, ako jeste moze da menja proizvod
 Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/proizvodi/{id}', [ProductController::class, 'update']);
 
+//Pivot tabele
+Route::get('proizvod/{id}/recept', [ProductController::class, 'showProizvodRecept']);
+Route::get('proizvod/{id}/korpa', [ProductController::class, 'showProizvodKorpa']);
+Route::get('proizvod/{id}/kupovina', [ProductController::class, 'showProizvodKupovina']);
+
 //Recept
 Route::middleware(['auth:sanctum', IsAdmin::class])->post('recepti', [ReceptController::class, 'store']);
 Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);

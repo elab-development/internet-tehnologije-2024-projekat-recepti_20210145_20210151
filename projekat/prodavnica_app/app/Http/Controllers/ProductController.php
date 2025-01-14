@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Proizvod;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProizvodKorpaResource;
+use App\Http\Resources\ProizvodKupovinaResource;
+use App\Http\Resources\ProizvodReceptResource;
+use App\Models\Recept;
 use Validator;
 
 class ProductController extends Controller
@@ -120,5 +124,35 @@ class ProductController extends Controller
             'error' => $e->getMessage() 
         ], 500);
         }
+    }
+    public function showProizvodRecept($id)
+    {
+        // Nadji proizvod sa id
+        $proizvod = Proizvod::findOrFail($id);
+        $proizvod->load('recepti');
+
+        if ($proizvod->recepti->isEmpty()) {
+            return response()->json(['message' => 'Nema povezanih recepata za ovaj proizvod.'], 404);
+        }
+        // Vratiti sve povezane recepte putem pivot tabele
+        return ProizvodReceptResource::collection($proizvod->recepti); 
+    }
+    public function showProizvodKorpa($id)
+    {
+        // Nadji proizvod sa id
+        $korpa = Korpa::findOrFail($id); // Ovdje koristimo Korpa model, jer nam treba korpa
+     
+        // Vratiti sve povezane proizvode putem pivot tabele
+        return ProizvodKorpaResource::collection($korpa->proizvodi); 
+        // Pretpostavlja se da je 'proizvodi' relacija koja je definisana u modelu Korpa
+    }
+    public function showProizvodKupovina($id)
+    {
+        // Nadji proizvod sa id
+        $kupovina = Kupovina::findOrFail($id); // Ovdje koristimo Kupovina model, jer nam treba kupovina
+     
+        // Vratiti sve povezane proizvode putem pivot tabele
+        return ProizvodKupovinaResource::collection($kupovina->proizvodi);
+        // Pretpostavlja se da je 'proizvodi' relacija koja je definisana u modelu Kupovina
     }
 }

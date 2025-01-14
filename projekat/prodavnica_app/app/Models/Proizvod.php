@@ -15,10 +15,9 @@ class Proizvod extends Model
     ];
     public function recepti()
     {
-        //return $this->belongsToMany(Recept::class, 'recept_proizvod');
-        return $this->belongsToMany(Recept::class)
-                ->as('proizvod_recept')
-                ->withTimestamps();
+        return $this->belongsToMany(Recept::class, 'proizvod_recept','proizvod_id', 'recept_id')
+                ->withPivot('kolicina')  // Da bismo dohvatili količinu iz pivot tabele
+                ->withTimestamps();      // Ako su potrebni timestampi
     }
     public function korpe()
     {

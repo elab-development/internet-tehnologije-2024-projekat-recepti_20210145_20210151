@@ -19,8 +19,10 @@ class Recept extends Model
     public function proizvodi()
     {
         //return $this->belongsToMany(Proizvod::class, 'recept_proizvod');
-        return $this->belongsToMany(Proizvod::class)
+        /*return $this->belongsToMany(Proizvod::class)
                 ->as('proizvod_recept')
-                ->withTimestamps();
+                ->withTimestamps();*/
+                return $this->belongsToMany(Proizvod::class, 'proizvod_recept', 'recept_id', 'proizvod_id')
+                ->withPivot('kolicina');  // Povlačenje količine iz pivot tabele
     }
 }

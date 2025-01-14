@@ -18,19 +18,19 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'name' => 'Marko Markovic',
-                'email' => 'marko@example.com',
+                'email' => 'marko1@example.com',
                 'password' => Hash::make('lozinka123'), // Ne zaboravite da hasirate lozinku
                 'uloga' => 'gost',
             ],
             [
                 'name' => 'Ana Anic',
-                'email' => 'ana@example.com',
+                'email' => 'ana1@example.com',
                 'password' => Hash::make('lozinka456'),
                 'uloga' => 'korisnik',
             ],
             [
                 'name' => 'Nikola Nikolic',
-                'email' => 'nikola@example.com',
+                'email' => 'nikola1@example.com',
                 'password' => Hash::make('lozinka789'),
                 'uloga' => 'gost',
             ],
