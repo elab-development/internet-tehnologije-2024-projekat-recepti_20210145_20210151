@@ -15,11 +15,11 @@ class ProizvodKorpaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'proizvod_id' => $this->proizvod_id,
-            'korpa_id' => $this->korpa_id,
-            'naziv_proizvoda' => $this->proizvod->naziv,  // Pristup proizvodima
-            'naziv_korpe' => $this->korpa->status,       // Pretpostavljam da korpa ima status
-            'kolicina' => $this->pivot->kolicina,        // Pivot podatak: količina
+            'korpa_id' => $this->pivot->korpa_id,  // ID korpe
+            'proizvod_id' => $this->pivot->proizvod_id,  // ID proizvoda
+            'naziv_proizvoda' => $this->naziv,  // Naziv proizvoda iz povezane tabele Proizvod
+            'cena_proizvoda' => $this->cena,  // Cena proizvoda
+            'kolicina_proizvoda' => $this->pivot->kolicina_proizvoda,  // Količina proizvoda u korpi
         ];
     }
 }

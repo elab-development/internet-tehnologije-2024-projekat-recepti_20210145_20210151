@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Proizvod;
 use App\Models\ProizvodRecept;
+use App\Models\Korpa;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProizvodKorpaResource;
 use App\Http\Resources\ProizvodKupovinaResource;
 use App\Http\Resources\ProizvodReceptResource;
 use App\Models\Recept;
 use App\Http\Resources\ProizvodResource;
+use App\Http\Resources\KorpaResource;
 use Validator;
 
 class ProductController extends Controller
@@ -127,20 +129,6 @@ class ProductController extends Controller
         ], 500);
         }
     }
-    /*public function showProizvodRecept($id)
-    {
-        // Nadji proizvod sa id
-        $proizvod = Proizvod::findOrFail($id);
-        $proizvod->load('recepti');
-
-        if ($proizvod->recepti->isEmpty()) {
-            return response()->json(['message' => 'Nema povezanih recepata za ovaj proizvod.'], 404);
-        }
-        // Vratiti sve povezane recepte putem pivot tabele
-        return ProizvodReceptResource::collection($proizvod->recepti); 
-
-        
-    }*/
     public function showProizvodRecept($id)
     {  
         // Nađi proizvod sa id
@@ -157,12 +145,10 @@ class ProductController extends Controller
 
     public function showProizvodKorpa($id)
     {
-        // Nadji proizvod sa id
-        $korpa = Korpa::findOrFail($id); // Ovdje koristimo Korpa model, jer nam treba korpa
-     
-        // Vratiti sve povezane proizvode putem pivot tabele
-        return ProizvodKorpaResource::collection($korpa->proizvodi); 
-        // Pretpostavlja se da je 'proizvodi' relacija koja je definisana u modelu Korpa
+        $korpa = Korpa::findOrFail($id);
+        $korpa->load('proizvodi'); // Učitaj povezane proizvode
+        // Vratiti korpu sa svim povezanim proizvodima
+        return new KorpaResource($korpa);
     }
     public function showProizvodKupovina($id)
     {
