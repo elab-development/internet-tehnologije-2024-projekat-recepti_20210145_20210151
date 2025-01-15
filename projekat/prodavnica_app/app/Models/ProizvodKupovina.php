@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProizvodKupovina extends Model
 {
+    use HasFactory;
     protected $table = 'proizvod_kupovinas'; // Naziv pivot tabele
 
     protected $fillable = [

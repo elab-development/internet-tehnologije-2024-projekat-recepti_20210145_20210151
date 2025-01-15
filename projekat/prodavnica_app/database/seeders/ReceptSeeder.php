@@ -13,7 +13,7 @@ class ReceptSeeder extends Seeder
      */
     public function run(): void
     {
-        $recepti = [
+        /*$recepti = [
             [
                 'naziv' => 'Pita sa jabukama',
                 'tip_jela' => 'Desert',
@@ -37,6 +37,8 @@ class ReceptSeeder extends Seeder
         // Ubacivanje recepata u bazu
         foreach ($recepti as $recept) {
             Recept::create($recept);
-        }
+        }*/
+
+        Recept::factory()->count(50)->create();
     }
 }

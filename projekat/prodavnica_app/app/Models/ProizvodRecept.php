@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProizvodRecept extends Model
 {
+    use HasFactory;
     protected $fillable = ['proizvod_id', 'recept_id', 'kolicina'];
     
     protected $table = 'proizvod_recept'; // Ime tabele koju koristiš u bazi
