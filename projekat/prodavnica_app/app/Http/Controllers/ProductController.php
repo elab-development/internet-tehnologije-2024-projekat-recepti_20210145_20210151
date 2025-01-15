@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proizvod;
+use App\Models\ProizvodRecept;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProizvodKorpaResource;
 use App\Http\Resources\ProizvodKupovinaResource;
 use App\Http\Resources\ProizvodReceptResource;
 use App\Models\Recept;
+use App\Http\Resources\ProizvodResource;
 use Validator;
 
 class ProductController extends Controller
@@ -125,7 +127,7 @@ class ProductController extends Controller
         ], 500);
         }
     }
-    public function showProizvodRecept($id)
+    /*public function showProizvodRecept($id)
     {
         // Nadji proizvod sa id
         $proizvod = Proizvod::findOrFail($id);
@@ -136,7 +138,23 @@ class ProductController extends Controller
         }
         // Vratiti sve povezane recepte putem pivot tabele
         return ProizvodReceptResource::collection($proizvod->recepti); 
+
+        
+    }*/
+    public function showProizvodRecept($id)
+    {  
+        // Nađi proizvod sa id
+        $proizvod = Proizvod::findOrFail($id);
+        $proizvod->load('recepti'); // Učitaj povezane recepte
+
+        if ($proizvod->recepti->isEmpty()) {
+            return response()->json(['message' => 'Nema povezanih recepata za ovaj proizvod.'], 404);
+        }
+
+        // Vratiti proizvod sa povezanim receptima kroz resurs
+        return new ProizvodResource($proizvod);
     }
+
     public function showProizvodKorpa($id)
     {
         // Nadji proizvod sa id

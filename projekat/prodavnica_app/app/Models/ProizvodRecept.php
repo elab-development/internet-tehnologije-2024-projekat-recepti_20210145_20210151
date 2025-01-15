@@ -12,13 +12,15 @@ class ProizvodRecept extends Model
 
     public $timestamps = true;
 
+    public function recept()
+    {
+        return $this->belongsTo(Recept::class, 'recept_id');
+    }
     public function proizvod()
     {
         return $this->belongsTo(Proizvod::class, 'proizvod_id');
     }
 
-    public function recept()
-    {
-        return $this->belongsTo(Recept::class, 'recept_id');
-    }
+    
+    
 }
