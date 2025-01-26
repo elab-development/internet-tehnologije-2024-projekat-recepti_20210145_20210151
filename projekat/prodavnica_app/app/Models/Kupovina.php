@@ -28,7 +28,7 @@ class Kupovina extends Model
     // Veza sa Proizvod modelom (Mnogi proizvodi mogu pripadati kupovini)
     public function proizvodi()
     {
-        return $this->belongsToMany(Proizvod::class, 'proizvod_kupovinas')
+        return $this->belongsToMany(Proizvod::class, 'proizvod_kupovinas', 'id_kupovine', 'proizvod_id')
                     ->withPivot('kolicina') // Pivot polje za količinu
                     ->withTimestamps(); // Timestamps za pivot tabelu
     }

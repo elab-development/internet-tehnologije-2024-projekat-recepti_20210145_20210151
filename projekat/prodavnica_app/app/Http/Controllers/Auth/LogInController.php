@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class LogInController extends Controller
 {
-    public function login(Request $request)
+    /*public function login(Request $request)
     {
         // Validacija unetih podataka
         $validatedData = $request->validate([
@@ -37,6 +38,33 @@ class LogInController extends Controller
                 'message' => 'Pogrešni email ili lozinka.',
             ], 401);
         }
+    }*/
+
+    public function login(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Proverite da li korisnik postoji i da li je lozinka ispravna
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Neispravan email ili lozinka.'], 401);
+        }
+
+        // Generišemo token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Uspešno ste se prijavili.',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
     }
 
     public function logout(Request $request)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Proizvod;
 use App\Models\ProizvodRecept;
 use App\Models\Korpa;
+use App\Models\Kupovina;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProizvodKorpaResource;
 use App\Http\Resources\ProizvodKupovinaResource;
@@ -13,6 +14,8 @@ use App\Models\Recept;
 use App\Http\Resources\ProizvodResource;
 use App\Http\Resources\KorpaResource;
 use Validator;
+use App\Http\Resources\KupovinaResource;
+
 
 class ProductController extends Controller
 {
@@ -152,11 +155,13 @@ class ProductController extends Controller
     }
     public function showProizvodKupovina($id)
     {
-        // Nadji proizvod sa id
-        $kupovina = Kupovina::findOrFail($id); // Ovdje koristimo Kupovina model, jer nam treba kupovina
-     
-        // Vratiti sve povezane proizvode putem pivot tabele
-        return ProizvodKupovinaResource::collection($kupovina->proizvodi);
-        // Pretpostavlja se da je 'proizvodi' relacija koja je definisana u modelu Kupovina
+        $proizvod = Proizvod::findOrFail($id);
+
+    // Učitajte povezane kupovine kroz pivot tabelu (pretpostavljam da imate ovu vezu)
+        $proizvod->load('kupovine');  // Ovde pretpostavljamo da postoji 'kupovine' relacija u modelu Proizvod
+
+    // Vratiti proizvod sa svim povezanim kupovinama
+        return new ProizvodKupovinaResource($proizvod->kupovine);
+
     }
 }

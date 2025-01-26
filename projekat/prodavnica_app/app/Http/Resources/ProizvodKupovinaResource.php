@@ -14,12 +14,15 @@ class ProizvodKupovinaResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'proizvod_id' => $this->proizvod_id,
-            'kupovina_id' => $this->kupovina_id,
-            'naziv_proizvoda' => $this->proizvod->naziv,  // Pristup proizvodima
-            'ukupna_cena' => $this->kupovina->ukupna_cena, // Pristup ukupnoj ceni kupovine
-            'kolicina' => $this->pivot->kolicina,         // Pivot podatak: količina
-        ];
+        return $this->map(function ($item) {
+            return [
+                'kupovina_id' => $item->pivot->id_kupovine, // ID kupovine iz pivot tabele
+                'proizvod_id' => $item->pivot->proizvod_id, // ID proizvoda iz pivot tabele
+                'naziv_proizvoda' => $item->naziv, // Naziv proizvoda
+                'ukupna_cena' => $item->ukupna_cena, // Ukupna cena kupovine
+                'kolicina' => $item->pivot->kolicina, // Količina proizvoda iz pivot tabele
+            ];
+        })->toArray(); // Mapiramo kolekciju i pretvaramo je u <niz></niz>
+
     }
 }

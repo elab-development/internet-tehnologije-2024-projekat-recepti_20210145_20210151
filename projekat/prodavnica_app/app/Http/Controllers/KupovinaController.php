@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Kupovina;
 use Illuminate\Http\Request;
+use App\Http\Resources\KupovinaResource;
 
 class KupovinaController extends Controller
 {
