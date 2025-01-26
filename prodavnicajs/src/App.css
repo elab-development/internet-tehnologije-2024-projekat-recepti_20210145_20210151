@@ -1,3 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #111;  /* Tamna pozadina */
+  color: white;  /* Bela boja teksta kao kontrast */
+}
+
 .App {
   text-align: center;
 }
@@ -87,7 +99,7 @@
 }
 
 .login-input:focus {
-  border-color: #007bff;
+  border-color: #ff4081;
   outline: none;
 }
 
@@ -96,7 +108,7 @@
   padding: 10px;
   font-size: 1rem;
   color: #fff;
-  background-color: #007bff;
+  background-color: #ff4081;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -104,7 +116,7 @@
 }
 
 .login-button:hover {
-  background-color: #0056b3;
+  background-color: #f61d69;
 }
 
 @media (max-width: 480px) {
@@ -134,10 +146,14 @@
   align-items: center;
 }
 
-.navbar-brand {
+.navbar-brand a{
   font-size: 24px;
   color: white;
   font-weight: bold;
+  text-decoration: none; /* Uklanja podvlačenje */
+}
+.navbar-brand a:hover {
+  color: #ff4081; /* Menja boju teksta u roze kada se pritisne */
 }
 
 .navbar-menu {
@@ -152,6 +168,7 @@
   position: relative;
   font-size: 18px;
   color: white;
+  cursor: pointer;
 }
 .navbar-item a {
   text-decoration: none; /* Uklanja plavi podvlačeni link */
@@ -159,10 +176,10 @@
 }
 
 .navbar-item:hover {
-  color: #f4a261;
+  color: #ff4081;
 }
 .navbar-item a:hover {
-  color: #f4a261; /* Hover efekat za link */
+  color: #ff4081; /* Hover efekat za link */
 }
 
 .dropdown-button {
@@ -203,7 +220,7 @@
 }
 
 .dropdown-item:hover {
-  background-color: #f4a261;
+  background-color: #ff4081;
 }
 
 /* Show dropdown on hover */
@@ -211,4 +228,176 @@
   display: block;
 }
 
+/* Responzivnost za mobilne uređaje */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
 
+  .navbar-toggle {
+    display: block;
+    cursor: pointer;
+    color: white;
+  }
+
+  .navbar-menu {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+
+  .navbar-item {
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+  }
+
+  .dropdown-menu {
+    position: static;
+    background-color: #444;
+    display: block;
+    display: none;
+    padding: 0;
+    width: 100%; /* Ista širina kao i dugme za dropdown */
+    list-style: none;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px;
+    background-color: #333;
+  }
+}
+
+/* Responzivnost za šire ekrane (više od 768px) */
+@media (min-width: 769px) {
+  .navbar-menu {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .navbar-toggle {
+    display: none; /* Sakrij burger meni na širem ekranu */
+  }
+
+  .navbar-item {
+    width: auto;
+    text-align: center;
+    padding: 0;
+  }
+
+  .dropdown-menu {
+    display: none; /* Sakrij dropdown meni na početku */
+    position: absolute;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: block; /* Prikazivanje dropdown menija kad je aktivan */
+  }
+}
+
+
+
+
+/* Homepage.css */
+.homepage-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-image {
+  background: url('./assets/photos/homepage2.jpg') no-repeat center center/cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.85);  /* Manje zatamnjena slika, svetlija */
+  z-index: -1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.inspiration-text {
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);  /* Suptilna senka na tekstu */
+}
+
+.start-button {
+  background-color: #ff4081;  /* Snažna ružičasta */
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  font-size: 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  /* Senka dugmeta za dublji efekat */
+}
+
+.start-button:hover {
+  background-color: #e91e63;  /* Tamnija ružičasta pri hoveru */
+  transform: translateY(-3px);  /* Efekat podizanja pri hoveru */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);  /* Jača senka pri hoveru */
+}
+
+.start-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.5);  /* Fokus efekat sa svetlom ružičastom */
+}
+
+/* Responsivnost za mobilne uređaje */
+@media (max-width: 768px) {
+  .homepage-container {
+    height: auto;
+    padding: 20px;
+  }
+
+  .overlay {
+    padding: 30px;
+  }
+
+  .inspiration-text {
+    font-size: 1.8rem;
+  }
+
+  .start-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+  }
+}
