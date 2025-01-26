@@ -1,13 +1,20 @@
 import logo from './logo.svg';
-import LogInPage from "./components/LogInPage";
 import './App.css';
+import LogInPage from './components/LogInPage';
+import NavBar from './components/NavBar';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <LogInPage />;
-    </div>
+    <BrowserRouter className="App">
+      <NavBar /> {/* Navigacioni bar */}
+      <Routes>
+        <Route path="/login" element={<LogInPage />} />
+       </Routes>
+
+    </BrowserRouter>
   );
 }
 
 export default App;
+

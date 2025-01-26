@@ -125,4 +125,90 @@
   }
 }
 
+/* General Navbar styles */
+.navbar {
+  background-color: #333;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  margin: 0 15px;
+  position: relative;
+  font-size: 18px;
+  color: white;
+}
+.navbar-item a {
+  text-decoration: none; /* Uklanja plavi podvlačeni link */
+  color: inherit; /* Nasleđuje boju iz .navbar-item */
+}
+
+.navbar-item:hover {
+  color: #f4a261;
+}
+.navbar-item a:hover {
+  color: #f4a261; /* Hover efekat za link */
+}
+
+.dropdown-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-button svg {
+  margin-left: 8px;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #444;
+  min-width: 150px;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  padding: 8px 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f4a261;
+}
+
+/* Show dropdown on hover */
+.navbar-item:hover .dropdown-menu {
+  display: block;
+}
+
 
