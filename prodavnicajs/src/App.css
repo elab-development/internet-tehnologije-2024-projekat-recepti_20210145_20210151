@@ -136,6 +136,93 @@ body {
     font-size: 1rem;
   }
 }
+/*Registracija*/
+.registration-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.registration-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.registration-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.registration-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.registration-input:focus {
+  border-color: #ff4081;
+  outline: none;
+}
+
+.registration-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff4081;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.registration-button:hover {
+  background-color: #f61d69;
+}
+
+@media (max-width: 480px) {
+  .registration-container {
+    padding: 10px;
+  }
+
+  .registration-form {
+    padding: 20px;
+  }
+
+  .registration-title {
+    font-size: 1.5rem;
+  }
+
+  .registration-subtitle {
+    font-size: 1rem;
+  }
+}
 
 /* General Navbar styles */
 .navbar {

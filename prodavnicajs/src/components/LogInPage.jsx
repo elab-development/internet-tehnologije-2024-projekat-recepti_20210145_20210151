@@ -2,8 +2,12 @@
 import React from 'react'
 import axios from 'axios';
 import{useState} from "react";
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
+
 const LoginPage = () => {
     const [userData, setUserData] = useState({email:"", password:""});
+    const navigate = useNavigate();
+    
     function handleInput (e){
         //console.log(e);
         let newUserData = userData;
@@ -15,8 +19,10 @@ const LoginPage = () => {
     function handleLogIn (e) {
         e.preventDefault();
         //axios.defaults.withCredentials = true;
-        axios.post("http://127.0.0.1:8000/api/login", userData).then((res) => {
+        axios.post("http://127.0.0.1:8000/api/login", userData)
+        .then((res) => {
             console.log(res.data);
+            navigate("/");
         })
         .catch((e) => {
             console.log(e);
@@ -43,6 +49,9 @@ const LoginPage = () => {
             onInput = {handleInput}
         />
         <button type="submit" className="login-button">Prijavi se</button>
+        <div className="register-link">
+        <a href="/register">Kreirajte nalog</a>
+        </div>
         </div>
     </form>
   </div>
