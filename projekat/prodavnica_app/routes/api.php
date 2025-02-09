@@ -31,6 +31,7 @@ Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkE
 Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 
 //Proizvod
+Route::get('/proizvodi', [ProductController::class, 'getAllProducts']);
 Route::middleware('auth:api')->post('/proizvodi', [ProductController::class, 'store']);
 Route::get('/proizvodi/pretraga', [ProductController::class, 'search']); //get zahtev - podaci u URL
 //Prvo proveri da li je korisnik administrator, ako jeste moze da menja proizvod

@@ -42,7 +42,6 @@ const RegisterPage = () => {
             placeholder="Ime i prezime" 
             className="registration-input"
             name="name" 
-            //value={userData.name}
             onInput = {handleInput}
         />
         <input 
@@ -50,7 +49,6 @@ const RegisterPage = () => {
             placeholder="Email" 
             className="registration-input"
             name="email" 
-            //value={userData.email}
             onInput = {handleInput}
         />
         <input 
@@ -58,7 +56,6 @@ const RegisterPage = () => {
             placeholder="Lozinka" 
             className="registration-input"
             name = "password"
-            //value={userData.password}
             onInput = {handleInput}
         />
         <input 
@@ -66,7 +63,6 @@ const RegisterPage = () => {
             placeholder="Potvrdi lozinku" 
             className="registration-input"
             name = "password_confirmation"
-            //value={userData.password_confirmation}
             onInput = {handleInput}
         />
         <button type="submit" className="registration-button">Registruj se</button>

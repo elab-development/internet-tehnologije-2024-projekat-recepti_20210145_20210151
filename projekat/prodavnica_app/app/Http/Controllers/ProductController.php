@@ -19,6 +19,20 @@ use App\Http\Resources\KupovinaResource;
 
 class ProductController extends Controller
 {
+    // Dohvatanje svih proizvoda
+    public function getAllProducts()
+    {
+        $proizvodi = Proizvod::all(); // Uzimamo sve proizvode iz baze
+
+            if ($proizvodi->isEmpty()) {
+            return response()->json(['message' => 'Nema dostupnih proizvoda.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Lista svih proizvoda.',
+            'data' => $proizvodi
+        ]);
+    }
     public function store(Request $request)
     {
         // Validacija podataka
