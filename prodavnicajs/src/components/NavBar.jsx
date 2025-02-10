@@ -1,11 +1,19 @@
 /*import React from 'react';*/
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect, } from 'react';
 import { Link } from 'react-router-dom';
 import { BsCart3 } from "react-icons/bs";
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { CartContext } from '../context/CartContext';
 
 
 const NavBar = () => {
+    
+    const { cart } = useContext(CartContext);
+    const [cartCount, setCartCount] = useState(0);
+    useEffect(() => {
+        setCartCount(cart.length);
+    }, [cart]);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -41,7 +49,10 @@ const NavBar = () => {
                     <Link to="/login">Prijava</Link>
                 </li>
                 <li className="navbar-item">
-                    <BsCart3 />
+                    <Link to="/korpa" className="cart-icon-btn">
+                        <BsCart3 />
+                        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+                    </Link>
                 </li>
             </ul>
         </nav>

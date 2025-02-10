@@ -18,7 +18,8 @@ Route::get('/user', function (Request $request) {
 
 //Registracija i prijava
 Route::post('/register', [ApiRegisterController::class, 'register']);
-Route::post('/login', [LogInController::class, 'login']);
+//Route::post('/login', [LogInController::class, 'login']);
+Route::post('/login', [LogInController::class, 'login'])->name('login');
 Route::post('/logout', [LogInController::class, 'logout'])->middleware('auth:sanctum');
 //Resetovanhje lozinke
 
@@ -51,6 +52,7 @@ Route::get('/recepti/pretraga', [ReceptController::class, 'pretraga']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/korpa/add-product', [KorpaController::class, 'addProduct']);
     Route::post('/korpa/remove-product', [KorpaController::class, 'removeProduct']);
+    Route::post('/korpa/update-product', [KorpaController::class, 'updateProduct']);
     Route::get('/korpa', [KorpaController::class, 'viewCart']);
 });
 

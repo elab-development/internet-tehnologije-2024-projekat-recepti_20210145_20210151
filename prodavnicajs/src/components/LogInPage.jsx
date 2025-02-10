@@ -22,6 +22,7 @@ const LoginPage = () => {
         axios.post("http://127.0.0.1:8000/api/login", userData)
         .then((res) => {
             console.log(res.data);
+            localStorage.setItem('token', res.data.access_token); // Sačuvaj token
             navigate("/");
         })
         .catch((e) => {

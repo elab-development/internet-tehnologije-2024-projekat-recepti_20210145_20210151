@@ -20,28 +20,30 @@ class KorpaController extends Controller
             'proizvod_id' => 'required|exists:proizvods,id',
             'kolicina' => 'required|integer|min:1',
         ]);
-       
-
+    
         $korpa = auth()->user()->korpa;
         if (!$korpa) {
             $korpa = Korpa::create(['user_id' => auth()->id()]);
         }
-
+    
         $proizvod = Proizvod::find($validated['proizvod_id']);
-        //Dodavanje u pivot tabelu
+        
+        // Proveravamo dostupnu količinu proizvoda
+        if ($proizvod->dostupna_kolicina < $validated['kolicina']) {
+            return response()->json(['message' => 'Proizvoda nema na stanju.'], 400);
+        }
+    
+        // Dodavanje u pivot tabelu
         $korpa->proizvodi()->syncWithoutDetaching([
             $proizvod->id => ['kolicina_proizvoda' => $validated['kolicina']],
         ]);
-         //Proveravamo dostupnu kolicinu proizvoda
-         if ($proizvod->kolicina < $validated['kolicina']) {
-            return response()->json(['message' => 'Proizvoda nema na stanju.'], 400);
-        }
-
+    
         $ukupnaCena = $korpa->ukupna_cena + ($proizvod->cena * $validated['kolicina']);
         $korpa->update(['ukupna_cena' => $ukupnaCena]);
-
+    
         return response()->json(['message' => 'Proizvod dodat u korpu.']);
     }
+    
 
     public function removeProduct(Request $request)
     {
@@ -81,7 +83,39 @@ class KorpaController extends Controller
         if (!$korpa) {
             return response()->json(['message' => 'Korpa je prazna.']);
         }
-
-        return response()->json($korpa->load('proizvodi'));
+        $korpa->load(['proizvodi' => function ($query) {
+            $query->withPivot('kolicina_proizvoda'); // Učitaj količinu proizvoda iz pivot tabele
+        }]);
+        return response()->json($korpa);
+        //return response()->json($korpa->load('proizvodi'));
     }
+    
+    //Azuriranje kolicine proizvoda u korpi
+    public function updateProduct(Request $request)
+    {
+        $request->validate([
+            'proizvod_id' => 'required|exists:proizvods,id',
+            'kolicina' => 'required|integer|min:1',
+        ]);
+
+        $korpa = Korpa::where('user_id', auth()->id())->first();
+
+        if (!$korpa) {
+         return response()->json(['message' => 'Korpa ne postoji.'], 404);
+        }
+
+        $proizvodKorpa = ProizvodKorpa::where('korpa_id', $korpa->id)
+                                    ->where('proizvod_id', $request->proizvod_id)
+                                    ->first();
+
+        if (!$proizvodKorpa) {
+            return response()->json(['message' => 'Proizvod nije u korpi.'], 404);
+        }
+
+        $proizvodKorpa->kolicina_proizvoda = $request->kolicina;
+        $proizvodKorpa->save();
+
+        return response()->json(['message' => 'Količina proizvoda uspešno ažurirana.', 'proizvod' => $proizvodKorpa]);
+    }
+
 }
