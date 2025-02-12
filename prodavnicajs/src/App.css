@@ -383,6 +383,27 @@ h3 {
   color: #666;
 }
 
+.cart-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buy-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.buy-button:hover {
+  background-color: #45a049;
+}
+
 /* Style for cart item delete button */
 .cart-item .delete-btn {
   background-color: #ff4d4d;

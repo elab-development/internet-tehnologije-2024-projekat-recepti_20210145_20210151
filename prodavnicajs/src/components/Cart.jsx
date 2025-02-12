@@ -22,13 +22,16 @@ const Cart = () => {
                             <p>{item.naziv}</p>
                             <p>{item.cena} RSD</p>
                             <div>
-                                <button onClick={() => updateQuantity(item.proizvod_id, "decrease")}>-</button>
+                                <button onClick={() => updateQuantity(item.id, "decrease")}>-</button>
                                 <p>{item.pivot.kolicina_proizvoda}</p>
-                                <button onClick={() => updateQuantity(item.proizvod_id, "increase")}>+</button>
+                                <button onClick={() => updateQuantity(item.id, "increase")}>+</button>
                             </div>
                         </div>
                     ))}
-                    <h3>Ukupno: {total} RSD</h3>
+                    <div className="cart-total">
+                        <h3>Ukupno: {total} RSD</h3>
+                        <button className="buy-button"> Kupi </button>
+                    </div>
                 </div>
             )}
         </div>

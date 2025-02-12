@@ -14,7 +14,7 @@ class Korpa extends Model
 
     public function proizvodi()
     {
-        return $this->belongsToMany(Proizvod::class, 'proizvod_korpas')
+        return $this->belongsToMany(Proizvod::class, 'proizvod_korpas','korpa_id', 'proizvod_id')
                     ->withPivot('kolicina_proizvoda')
                     ->withTimestamps();
     }

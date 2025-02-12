@@ -1,123 +1,69 @@
 
 import React, { useContext } from 'react';
+
 import { CartContext} from '../context/CartContext';
 
 function OneProduct({ product }) {
 
-  //const { addToCart } = useCartContext();
-  const { fetchCart } = useContext(CartContext); 
+  const { cart, updateQuantity, fetchCart } = useContext(CartContext); 
+
   const handleAddToCart = async (product) => {
     try {
-      console.log("Proizvod koji se dodaje u korpu", product);
-      // Simulacija količine, ovde bi trebalo da se uzme količina iz input polja ili sl.
-      const quantity = 1;
+        console.log("Proizvod koji se dodaje u korpu", product);
 
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error("Nema tokena, korisnik nije ulogovan!");
-        return;
-      }
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error("Nema tokena, korisnik nije ulogovan!");
+            return;
+        }
 
+        // Provera da li proizvod već postoji u korpi
+        const existingProduct = cart.find(item => item.proizvod_id === product.id);
 
-      // Slanje POST zahteva na API
-      const response = await fetch('http://localhost:8000/api/korpa/add-product', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          proizvod_id: product.id,
-          kolicina: quantity,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        //addToCart(product); // Dodaj proizvod u lokalnu korpu ako je uspešno dodan (addToCart je fja iz CartContext.jsx)
-        await fetchCart();
-        alert("Uspesno! " + data.message); // Obavesti korisnika
+        const quantity = 1;  // Početna količina koja se dodaje ili menja
+        if (existingProduct) {
+          // Ako proizvod već postoji u korpi, uzmi trenutnu količinu
+          quantity = existingProduct.kolicina + 1; // Povećaj količinu za 1
+        }
+        
+        if (existingProduct) {
+          // Ako proizvod postoji, pozivaš updateQuantity
+          await updateQuantity(product.id, "increase");  // Čekanje na API poziv da se izvrši
+          await fetchCart();
+          alert("Količina proizvoda je povećana.");
       } else {
-        alert("Greska" + data.message); // Obavesti korisnika u slučaju greške
+          // Ako proizvod ne postoji, dodaješ ga u korpu
+          const response = await fetch('http://localhost:8000/api/korpa/add-product', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                  proizvod_id: product.id,
+                  kolicina: quantity,
+              }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+              // Osveži korpu nakon što je proizvod dodat
+              await fetchCart();  // Očekuj da se API poziv završi pre nego što osvežiš UI
+              alert("Uspesno dodavanje proizvoda u korpu: " + data.message);
+          } else {
+              alert("Greška: " + data.message);
+          }
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Greška pri dodavanju proizvoda:', error);
       alert('Došlo je do greške pri dodavanju proizvoda u korpu.');
-    }
-  };
-
-  /*const handleRemoveFromCart = async (productId) => {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error("Nema tokena, korisnik nije ulogovan!");
-            return;
-        }
-
-        // Poziv API-ja za uklanjanje proizvoda iz korpe
-        const response = await fetch('http://localhost:8000/api/korpa/remove-product', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                proizvod_id: productId,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Osvežavanje podataka u CartContext-u
-            await fetchCart();
-            alert("Proizvod uspešno uklonjen iz korpe!");
-        } else {
-            alert("Greška: " + data.message);
-        }
-    } catch (error) {
-        console.error('Greška pri uklanjanju proizvoda:', error);
-        alert('Došlo je do greške pri uklanjanju proizvoda iz korpe.');
-    }
-};*/
+  }
+};
 
 
-/*const handleUpdateQuantity = async (productId, newQuantity) => {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error("Nema tokena, korisnik nije ulogovan!");
-            return;
-        }
 
-        // Poziv API-ja za ažuriranje količine proizvoda
-        const response = await fetch('http://localhost:8000/api/korpa/update-product', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                proizvod_id: productId,
-                kolicina: newQuantity,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Osvežavanje podataka u CartContext-u
-            await fetchCart();
-            alert("Količina proizvoda uspešno ažurirana!");
-        } else {
-            alert("Greška: " + data.message);
-        }
-    } catch (error) {
-        console.error('Greška pri ažuriranju količine proizvoda:', error);
-        alert('Došlo je do greške pri ažuriranju količine proizvoda.');
-    }
-};*/ 
     return (
         <div className="card">
             <img className="card-img" src={product.slika || "https:/picsum.photos/200"} alt={product.naziv} />
@@ -133,4 +79,4 @@ function OneProduct({ product }) {
     );
 }
 
-export default OneProduct;
+export default OneProduct; 
