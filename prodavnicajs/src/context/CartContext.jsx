@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
 
@@ -6,6 +6,9 @@ export const CartProvider = ({ children }) => {
 
     const [cart, setCart] = useState([]);
 
+    useEffect(() => {
+        console.log("Korpa ažurirana:", cart);
+    }, [cart]);
 
     const fetchCart = async () => {
         try {
@@ -14,7 +17,7 @@ export const CartProvider = ({ children }) => {
             });
             const data = await response.json();
             console.log("Podaci iz API-ja:", data);
-    
+
             if (data.proizvodi) {
                 if (Array.isArray(data.proizvodi)) {
                     setCart(data.proizvodi); // Postavljamo proizvode iz korpe
@@ -30,40 +33,46 @@ export const CartProvider = ({ children }) => {
             console.error('Greška pri učitavanju korpe:', error);
         }
     };
-    
+
     const addToCart = async (product) => {
         try {
+            console.log("Proizvod koji se dodaje u korpu", product);
+        
+                
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error("Nema tokena, korisnik nije ulogovan!");
                 return;
             }
-    
+        
+            console.log("product.id:", product.id);
+            console.log("cart:", cart);
             // Provera da li proizvod već postoji u korpi
-            const existingProduct = cart.find(item => item.proizvod_id === product.id);
-            let quantity = 1;
-    
+            const existingProduct = cart.find(item => item.pivot.proizvod_id === product.id);
+            console.log("Postojeći proizvod u korpi:", existingProduct);  // Dodaj log za proizvod koji je pronađen
+
+            let quantity = 1;  // Početna količina koja se dodaje ili menja
             if (existingProduct) {
-                // Ako proizvod već postoji, uzmi trenutnu količinu i povećaš je za 1
-                quantity = existingProduct.kolicina + 1; 
+                // Ako proizvod već postoji u korpi, uzmi trenutnu količinu
+                quantity = existingProduct.pivot.kolicina_proizvoda + 1; // Povećaj količinu za 1
                 await updateQuantity(product.id, "increase");  // Ažuriranje količine
                 alert("Količina proizvoda je povećana.");
-            } else {
+            }else{
                 // Ako proizvod ne postoji, dodaješ ga u korpu
                 const response = await fetch('http://localhost:8000/api/korpa/add-product', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        proizvod_id: product.id,
-                        kolicina_proizvoda: quantity,
-                    }),
-                });
-    
-                const data = await response.json();
-    
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    proizvod_id: product.id,
+                    kolicina: quantity,
+                }),
+            });
+      
+            const data = await response.json();
+      
                 if (response.ok) {
                     // Osveži korpu nakon što je proizvod dodat
                     await fetchCart();  // Očekuj da se API poziv završi pre nego što osvežiš UI
@@ -71,13 +80,13 @@ export const CartProvider = ({ children }) => {
                 } else {
                     alert("Greška: " + data.message);
                 }
-            }
+            }        
         } catch (error) {
             console.error('Greška pri dodavanju proizvoda:', error);
             alert('Došlo je do greške pri dodavanju proizvoda u korpu.');
         }
     };
-    
+
     const updateQuantity = async (proizvod_id, action) => {
         try {
             const updatedCart = [...cart];  // Kopiraj trenutni state
@@ -86,16 +95,30 @@ export const CartProvider = ({ children }) => {
                 console.error("Proizvod nije pronađen u korpi.");
                 return;
             }
-   
-            let newQuantity = action === "increase" ? product.pivot.kolicina_proizvoda + 1 : product.pivot.kolicina_proizvoda - 1;
+
+            let newQuantity = action === "increase"
+                ? product.pivot.kolicina_proizvoda + 1
+                : product.pivot.kolicina_proizvoda - 1;
+
             if (newQuantity < 1) {
-                console.warn("Količina ne može biti manja od 1.");
+                //console.warn("Količina ne može biti manja od 1.");
+                //return;
+                await removeProduct(proizvod_id);
                 return;
             }
-   
-            product.pivot.kolicina_proizvoda = newQuantity;  // Ažuriraj količinu odmah u lokalnom stavu
-            setCart(updatedCart);  // Ažuriraj stanje korpe
-   
+
+            // Ažuriraj stanje korpe koristeći prevCart za sigurnost
+            setCart(prevCart => {
+                const updatedCart = prevCart.map(item =>
+                    item.pivot.proizvod_id === proizvod_id
+                        ? { ...item, pivot: { ...item.pivot, kolicina_proizvoda: newQuantity } }
+                        : item
+                );
+
+                console.log("Novo stanje korpe:", updatedCart); // Provera ažuriranja state-a
+                return updatedCart;
+            });
+
             const response = await fetch('http://localhost:8000/api/korpa/update-product', {
                 method: 'POST',
                 headers: {
@@ -108,22 +131,49 @@ export const CartProvider = ({ children }) => {
                     korpa_id: product.pivot.korpa_id
                 })
             });
-   
+
             if (response.ok) {
+                const data = await response.json();
+                console.log("Uspešno ažurirano:", data);
                 await fetchCart();  // Sinhronizuj sa serverom nakon lokalnih promena
             } else {
                 console.error("Greška pri ažuriranju količine:", response);
+                return;
             }
         } catch (error) {
             console.error("Greška pri ažuriranju količine proizvoda:", error);
         }
     };
-   
+
+    // Funkcija za uklanjanje proizvoda
+    const removeProduct = async (proizvod_id) => {
+        try {
+            const response = await fetch('http://localhost:8000/api/korpa/remove-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    proizvod_id: proizvod_id
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Proizvod uspešno uklonjen:", data);
+                await fetchCart();  // Sinhronizuj sa serverom nakon uklanjanja proizvoda
+            } else {
+                console.error("Greška pri uklanjanju proizvoda:", response);
+            }
+        } catch (error) {
+            console.error("Greška pri pozivu funkcije za uklanjanje proizvoda:", error);
+        }
+    };
+
     return (
-        //sta je sve dostupno drugim komponentama
-        <CartContext.Provider value={{ cart, setCart, addToCart, fetchCart, updateQuantity  }}> 
+        <CartContext.Provider value={{ cart, setCart, addToCart, fetchCart, updateQuantity }}>
             {children}
         </CartContext.Provider>
     );
 };
-

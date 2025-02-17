@@ -67,6 +67,7 @@ class KorpaController extends Controller
     
                 // Ukloni proizvod iz pivot tabele
                 $korpa->proizvodi()->detach($validated['proizvod_id']);
+                return response()->json(['message' => 'Proizvod uspešno uklonjen']);
             }
         }
     
@@ -74,8 +75,8 @@ class KorpaController extends Controller
         if ($korpa && $korpa->proizvodi()->count() === 0) {
             $korpa->delete();
         }
-    
-        return response()->json(['message' => 'Proizvod uklonjen iz korpe.']);
+
+        return response()->json(['error' => 'Proizvod nije pronađen u korpi'], 400);
     }
 
     public function viewCart()

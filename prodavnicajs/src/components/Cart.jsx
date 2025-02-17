@@ -5,7 +5,6 @@ const Cart = () => {
     const { cart, updateQuantity } = useContext(CartContext);
     console.log("Stanje korpe u Cart komponenti:", cart);
     
-    //const total = cart.reduce((sum, item) => sum + item.cena * item.kolicina_proizvoda, 0);
     const total = cart.reduce((sum, item) => sum + item.cena * item.pivot.kolicina_proizvoda, 0);
 
     return (
@@ -22,9 +21,9 @@ const Cart = () => {
                             <p>{item.naziv}</p>
                             <p>{item.cena} RSD</p>
                             <div>
-                                <button onClick={() => updateQuantity(item.id, "decrease")}>-</button>
+                                <button onClick={() => updateQuantity(item.pivot.proizvod_id, "decrease")}>-</button>
                                 <p>{item.pivot.kolicina_proizvoda}</p>
-                                <button onClick={() => updateQuantity(item.id, "increase")}>+</button>
+                                <button onClick={() => updateQuantity(item.pivot.proizvod_id, "increase")}>+</button>
                             </div>
                         </div>
                     ))}
