@@ -45,8 +45,9 @@ Route::get('proizvod/{id}/kupovina', [ProductController::class, 'showProizvodKup
 
 //Recept
 Route::middleware(['auth:sanctum', IsAdmin::class])->post('recepti', [ReceptController::class, 'store']);
-Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);
+//Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);
 Route::get('/recepti/pretraga', [ReceptController::class, 'pretraga']);
+Route::get('/recepti/{id}', [ReceptController::class, 'show']);
 
 //Korpa
 Route::middleware('auth:sanctum')->group(function () {
@@ -54,6 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/korpa/remove-product', [KorpaController::class, 'removeProduct']);
     Route::post('/korpa/update-product', [KorpaController::class, 'updateProduct']);
     Route::get('/korpa', [KorpaController::class, 'viewCart']);
+    Route::post('/korpa/clear', [KorpaController::class, 'clear']);
+
 });
 
 //Kupovina

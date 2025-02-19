@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
     const fetchCart = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/korpa', {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, }
             });
             const data = await response.json();
             console.log("Podaci iz API-ja:", data);
@@ -171,8 +171,29 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+    const clearCart = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/korpa/clear', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            if (response.ok) {
+                console.log("Korpa uspešno obrisana!");
+                setCart([]); // Resetuj stanje korpe na prazan niz
+            } else {
+                console.error("Greška pri brisanju korpe:", response);
+            }
+        } catch (error) {
+            console.error("Greška pri brisanju korpe:", error);
+        }
+    };
+    
     return (
-        <CartContext.Provider value={{ cart, setCart, addToCart, fetchCart, updateQuantity }}>
+        <CartContext.Provider value={{ cart, setCart, addToCart, fetchCart, updateQuantity, clearCart }}>
             {children}
         </CartContext.Provider>
     );

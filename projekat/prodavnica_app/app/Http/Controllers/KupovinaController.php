@@ -23,6 +23,7 @@ class KupovinaController extends Controller
             'ukupna_cena' => 'required|numeric',
             'nacin_placanja' => 'required|string',
             'adresa_dostave' => 'required|string',
+            'broj_kartice' => 'nullable|string', // Ova kolona može biti null, ako nije potrebno
         ]);
 
         $kupovina = Kupovina::create([
@@ -30,6 +31,7 @@ class KupovinaController extends Controller
             'ukupna_cena' => $request->ukupna_cena,
             'nacin_placanja' => $request->nacin_placanja,
             'adresa_dostave' => $request->adresa_dostave,
+            'broj_kartice' => $request->broj_kartice,  // Dodavanje broja kartice
         ]);
 
         return response()->json($kupovina, 201); // Vraća novokreiranu kupovinu

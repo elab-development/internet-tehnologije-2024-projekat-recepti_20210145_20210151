@@ -102,4 +102,15 @@ class ReceptController extends Controller
           'recepti' => $recepti,
         ]);
     }
+    public function show($id)
+    {
+    $recept = Recept::with('proizvodi')->find($id);
+
+    if (!$recept) {
+        return response()->json(['message' => 'Recept nije pronađen'], 404);
+    }
+
+    return response()->json($recept);
+    }
+
 }

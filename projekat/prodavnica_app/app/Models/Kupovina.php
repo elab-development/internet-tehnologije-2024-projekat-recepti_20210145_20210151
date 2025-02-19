@@ -17,6 +17,7 @@ class Kupovina extends Model
         'ukupna_cena',
         'nacin_placanja',
         'adresa_dostave',
+        'broj_kartice',
     ];
 
     // Veza sa User modelom (Kupovina pripada korisniku)

@@ -6,6 +6,7 @@ use App\Models\Korpa;
 use App\Models\Proizvod;
 use Illuminate\Http\Request;
 use App\Models\ProizvodKorpa;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -93,91 +94,79 @@ class KorpaController extends Controller
     }
     
     //Azuriranje kolicine proizvoda u korpi
-    /*public function updateProduct(Request $request)
+        public function updateProduct(Request $request)
     {
         $request->validate([
             'proizvod_id' => 'required|exists:proizvods,id',
-            'kolicina' => 'required|integer|min:1',
+            'kolicina' => 'required|integer|min:0',  // omogućeno postavljanje količine na 0
+            'korpa_id' => 'required|exists:korpas,id', // Dodaj validaciju za korpa_id
         ]);
 
-        $korpa = Korpa::where('user_id', auth()->id())->first();
+        $korpa = Korpa::find($request->korpa_id);
+        //$korpa = Korpa::where('user_id', auth()->id())->first();
 
         if (!$korpa) {
-         return response()->json(['message' => 'Korpa ne postoji.'], 404);
+            return response()->json(['message' => 'Korpa ne postoji.'], 404);
         }
 
         $proizvodKorpa = ProizvodKorpa::where('korpa_id', $korpa->id)
-                                    ->where('proizvod_id', $request->proizvod_id)
-                                    ->first();
+                                ->where('proizvod_id', $request->proizvod_id)
+                                ->first();
 
         if (!$proizvodKorpa) {
             return response()->json(['message' => 'Proizvod nije u korpi.'], 404);
         }
 
-        $proizvodKorpa->kolicina_proizvoda = $request->kolicina;
-        $proizvodKorpa->save();
+        // Ako je količina 0, uklanjamo proizvod iz korpe
+        if ($request->kolicina == 0) {
+            $proizvodKorpa->delete();
+            $this->updateTotalPrice($korpa);
+            return response()->json(['message' => 'Proizvod je uklonjen iz korpe.']);
+        }
 
-        return response()->json(['message' => 'Količina proizvoda uspešno ažurirana.', 'proizvod' => $proizvodKorpa]);
-        
+        $korpa->proizvodi()->updateExistingPivot($request->proizvod_id, [
+            'kolicina_proizvoda' => $request->kolicina
+        ]);
 
-    }*/
-    public function updateProduct(Request $request)
-{
-    $request->validate([
-        'proizvod_id' => 'required|exists:proizvods,id',
-        'kolicina' => 'required|integer|min:0',  // omogućeno postavljanje količine na 0
-        'korpa_id' => 'required|exists:korpas,id', // Dodaj validaciju za korpa_id
-    ]);
-
-    $korpa = Korpa::find($request->korpa_id);
-    //$korpa = Korpa::where('user_id', auth()->id())->first();
-
-    if (!$korpa) {
-        return response()->json(['message' => 'Korpa ne postoji.'], 404);
-    }
-
-    $proizvodKorpa = ProizvodKorpa::where('korpa_id', $korpa->id)
-                              ->where('proizvod_id', $request->proizvod_id)
-                              ->first();
-
-    if (!$proizvodKorpa) {
-        return response()->json(['message' => 'Proizvod nije u korpi.'], 404);
-    }
-
-    // Ako je količina 0, uklanjamo proizvod iz korpe
-    if ($request->kolicina == 0) {
-        $proizvodKorpa->delete();
         $this->updateTotalPrice($korpa);
-        return response()->json(['message' => 'Proizvod je uklonjen iz korpe.']);
+        // Vrati ažuriranu korpu i proizvod
+        $korpa = Korpa::with('proizvodi')->find($korpa->id);
+
+        // Vrati ažuriranu korpu i proizvod
+        //$korpa = Korpa::where('user_id', auth()->id())->first();
+        return response()->json([
+            'message' => 'Količina proizvoda uspešno ažurirana.',
+            'proizvod' => $proizvodKorpa,
+            'korpa' => $korpa->proizvodi,
+        ]);
+    }
+    private function updateTotalPrice($korpa)
+    {
+        $totalPrice = 0;
+
+        // Računanje ukupne cene na osnovu proizvoda i njihove količine
+        foreach ($korpa->proizvodi as $product) {
+            $totalPrice += $product->pivot->kolicina_proizvoda * $product->cena;
+        }
+
+        // Ažuriraj ukupnu cenu u bazi
+        $korpa->update(['ukupna_cena' => $totalPrice]);
     }
 
-    $korpa->proizvodi()->updateExistingPivot($request->proizvod_id, [
-        'kolicina_proizvoda' => $request->kolicina
-    ]);
+    public function clear(Request $request)
+    {
+        $korpa = Korpa::where('user_id', auth()->id())->latest()->first(); // Pronalazi najnoviju korpu korisnika
 
-    $this->updateTotalPrice($korpa);
-    // Vrati ažuriranu korpu i proizvod
-    $korpa = Korpa::with('proizvodi')->find($korpa->id);
+        if ($korpa) {
+            $korpa->delete(); // Briše korpu iz baze
+        }
 
-    // Vrati ažuriranu korpu i proizvod
-    //$korpa = Korpa::where('user_id', auth()->id())->first();
-    return response()->json([
-        'message' => 'Količina proizvoda uspešno ažurirana.',
-        'proizvod' => $proizvodKorpa,
-        'korpa' => $korpa->proizvodi,
-    ]);
-}
-private function updateTotalPrice($korpa)
-{
-    $totalPrice = 0;
-
-    // Računanje ukupne cene na osnovu proizvoda i njihove količine
-    foreach ($korpa->proizvodi as $product) {
-        $totalPrice += $product->pivot->kolicina_proizvoda * $product->cena;
+        return response()->json([
+            'message' => 'Kupovina uspešno završena. Vaša korpa je sada prazna.'
+        ]);
     }
 
-    // Ažuriraj ukupnu cenu u bazi
-    $korpa->update(['ukupna_cena' => $totalPrice]);
-}
+
+
 
 }
