@@ -5,20 +5,22 @@ import { Link } from "react-router-dom";
 const SearchReceipts = () => {
   const location = useLocation(); // Koristi useLocation za pristup URL-u
   const [receipts, setReceipts] = useState([]);
+  const [pagination, setPagination] = useState({}); // Dodajemo stanje za paginaciju
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // Trenutna stranica
 
   useEffect(() => {
-    // Preuzimanje parametara iz URL-a
     const queryParams = new URLSearchParams(location.search);
     const tipJela = queryParams.get("tip_jela");
 
     console.log("Tip jela:", tipJela);
 
-    // Pravimo URL za pretragu sa parametrima
-    const url = `http://localhost:8000/api/recepti/pretraga?tip_jela=${tipJela}`;
+    // URL za pretragu sa parametrima, uključujući trenutnu stranicu
+    const url = `http://localhost:8000/api/recepti/pretraga?tip_jela=${tipJela}&page=${currentPage}`;
     console.log("Poslati URL:", url);
 
-    // Fetch podataka sa servera
+    setLoading(true); // Početak učitavanja
+
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -27,6 +29,7 @@ const SearchReceipts = () => {
         // Ako su podaci u formatu koji se očekuje
         if (Array.isArray(data.recepti)) {
           setReceipts(data.recepti);
+          setPagination(data.pagination || {}); // Spremi paginaciju, ako postoji
         } else {
           console.error("Neočekivan format podataka:", data);
           setReceipts([]);
@@ -37,11 +40,16 @@ const SearchReceipts = () => {
         setReceipts([]);
       })
       .finally(() => {
-        setLoading(false);
+        setLoading(false); // Završeno učitavanje
       });
-  }, [location]);
+  }, [location, currentPage]); // useEffect zavisi od location i currentPage
 
-  // Prikazivanje podataka
+  // Funkcija za promenu stranice
+  const handlePageChange = (page) => {
+    if (page < 1 || page > pagination.last_page) return; // Proveravamo da li je stranica unutar granica
+    setCurrentPage(page);
+  };
+
   return (
     <div className="receipts-container">
       <h2 className="title">Recepti - {new URLSearchParams(location.search).get("tip_jela")}</h2>
@@ -71,9 +79,30 @@ const SearchReceipts = () => {
           ))}
         </div>
       )}
+
+      {/* Paginacija */}
+      {pagination.total > 0 && (
+        <div className="pagination">
+          {/* Dugme za prethodnu stranicu */}
+          {pagination.current_page > 1 && (
+            <button onClick={() => handlePageChange(pagination.current_page - 1)}>
+              Prethodna
+            </button>
+          )}
+
+          {/* Prikaz trenutne stranice */}
+          <span>{pagination.current_page} / {pagination.last_page}</span>
+
+          {/* Dugme za sledeću stranicu */}
+          {pagination.current_page < pagination.last_page && (
+            <button onClick={() => handlePageChange(pagination.current_page + 1)}>
+              Sledeća
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 export default SearchReceipts;
-

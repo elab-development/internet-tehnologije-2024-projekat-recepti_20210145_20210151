@@ -20,7 +20,7 @@ use App\Http\Resources\KupovinaResource;
 class ProductController extends Controller
 {
     // Dohvatanje svih proizvoda
-    public function getAllProducts()
+    /*public function getAllProducts()
     {
         $proizvodi = Proizvod::all(); // Uzimamo sve proizvode iz baze
 
@@ -32,7 +32,33 @@ class ProductController extends Controller
             'message' => 'Lista svih proizvoda.',
             'data' => $proizvodi
         ]);
+    }*/
+    public function getAllProducts(Request $request)
+{
+    // Parametar 'per_page' omogućava korisnicima da biraju broj proizvoda po stranici
+    $perPage = $request->input('per_page', 10); // Ako nije prosleđen, koristi se podrazumevani broj proizvoda po stranici (10)
+
+    // Paginacija proizvoda sa željenim brojem proizvoda po stranici
+    $proizvodi = Proizvod::paginate($perPage);
+
+    // Provera da li su proizvodi prazni
+    if ($proizvodi->isEmpty()) {
+        return response()->json(['message' => 'Nema dostupnih proizvoda.'], 404);
     }
+
+    // Vraćanje proizvoda zajedno sa informacijama o paginaciji
+    return response()->json([
+        'message' => 'Lista svih proizvoda.',
+        'data' => $proizvodi->items(),  // Vraća samo proizvode za trenutnu stranicu
+        'pagination' => [
+            'current_page' => $proizvodi->currentPage(),
+            'last_page' => $proizvodi->lastPage(),
+            'total' => $proizvodi->total(),
+            'per_page' => $proizvodi->perPage(),
+        ]
+    ]);
+}
+
     public function store(Request $request)
     {
         // Validacija podataka
@@ -61,7 +87,7 @@ class ProductController extends Controller
 
 
     //Pretraga proizvoda
-    public function search(Request $request)
+    /*public function search(Request $request)
     {
     // Preuzimanje parametara za pretragu iz zahteva
     $kljucnaRec = $request->input('keyword'); 
@@ -94,9 +120,6 @@ class ProductController extends Controller
     }
 
     // Ako je dostupnost definisana, dodajemo uslov da proizvod ima kolicinu veću od 0
-    /*if ($dostupnost !== null) {
-        $query->where('kolicina', '>', 0);
-    }*/
     if ($dostupna_kolicina !== null) {
         $query->where('dostupna_kolicina', '>', 0);
     }
@@ -113,7 +136,67 @@ class ProductController extends Controller
         'message' => 'Sistem je pronašao proizvode.',
         'data' => $proizvodi
     ]);
+    }*/
+    public function search(Request $request)
+{
+    // Preuzimanje parametara za pretragu iz zahteva
+    $kljucnaRec = $request->input('keyword'); 
+    $kategorija = $request->input('kategorija'); 
+    $cena_min = $request->input('cena_min');
+    $cena_max = $request->input('cena_max'); 
+    $dostupna_kolicina = $request->input('dostupna_kolicina');
+
+    // Upit za pretragu
+    $query = Proizvod::query();
+
+    // Pretraga na osnovu kljucne reci
+    if ($kljucnaRec) {
+        $query->where('naziv', 'like', "%{$kljucnaRec}%");
     }
+
+    // Pretraga na osnovu kategorije
+    if ($kategorija) {
+        $query->where('kategorija', $kategorija);
+    }
+
+    // Pretraga na osnovu min cene
+    if ($cena_min !== null) {
+        $query->where('cena', '>=', $cena_min);
+    }
+
+    // Pretraga na osnovu max cene
+    if ($cena_max !== null) {
+        $query->where('cena', '<=', $cena_max);
+    }
+
+    // Ako je dostupnost definisana, dodajemo uslov da proizvod ima kolicinu veću od 0
+    if ($dostupna_kolicina !== null) {
+        $query->where('dostupna_kolicina', '>', 0);
+    }
+
+    // Rezultat - paginacija 10 proizvoda po str
+    $proizvodi = $query->paginate(10);
+
+    // Provera da li su proizvodi pronađeni
+    if ($proizvodi->isEmpty()) {
+        return response()->json(['message' => 'Nema proizvoda koji odgovaraju kriterijumima pretrage.'], 404);
+    }
+
+    // Vraćanje podataka o proizvodima i paginaciji
+    return response()->json([
+        'message' => 'Sistem je pronašao proizvode.',
+        'data' => $proizvodi->items(), // Vraćamo samo proizvode
+        'pagination' => [
+            'total' => $proizvodi->total(), // Ukupan broj proizvoda
+            'current_page' => $proizvodi->currentPage(), // Trenutna stranica
+            'last_page' => $proizvodi->lastPage(), // Poslednja stranica
+            'per_page' => $proizvodi->perPage(), // Broj proizvoda po stranici
+            'from' => $proizvodi->firstItem(), // Prvi proizvod na trenutnoj stranici
+            'to' => $proizvodi->lastItem(), // Poslednji proizvod na trenutnoj stranici
+        ]
+    ]);
+}
+
 
     //Azuriranje proizvoda
     public function update(Request $request, $id)
