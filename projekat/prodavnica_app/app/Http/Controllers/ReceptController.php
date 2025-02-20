@@ -70,40 +70,8 @@ class ReceptController extends Controller
             'recept' => $recept,
         ]);
     }
-
-    //Pretraga recepta
-    /*public function pretraga(Request $request)
-    {
-        // Validacija parametara filtera
-        $validatedData = $request->validate([
-           'tip_jela' => 'nullable|string|in:predjelo,glavno jelo,desert,salata',
-        ]);
-
-        // Pretraga u bazi sa primenom filtera
-        $query = Recept::query();
-
-        // Ako je filter tip jela prisutan, filtriraj rezultate
-        if ($request->has('tip_jela')) {
-           $query->where('tip_jela', $request->input('tip_jela'));
-        }
-
-        // Izvršavanje upita i dobijanje rezultata
-        $recepti = $query->get();
-
-        // Ako nema rezultata, vratiti odgovarajuću poruku
-        if ($recepti->isEmpty()) {
-          return response()->json([
-             'message' => 'Nema rezultata za odabrani filter.',
-         ], 404);
-        }
-
-        // Vraćanje rezultata pretrage
-        return response()->json([
-          'recepti' => $recepti,
-        ]);
-    }*/
     public function pretraga(Request $request)
-{
+    {
     // Validacija parametara filtera
     $validatedData = $request->validate([
         'tip_jela' => 'nullable|string|in:predjelo,glavno jelo,desert,salata',
@@ -139,11 +107,12 @@ class ReceptController extends Controller
             'per_page' => $recepti->perPage(),
         ],
     ]);
-}
-
+    }
+//Ucitavanje pojedinacnih recepata
     public function show($id)
     {
-    $recept = Recept::with('proizvodi')->find($id);
+    $recept = Recept::with('proizvodi')->findOrFail($id);
+    //dd($recept->toArray());
 
     if (!$recept) {
         return response()->json(['message' => 'Recept nije pronađen'], 404);

@@ -8,16 +8,23 @@ const LoginPage = () => {
     const [userData, setUserData] = useState({email:"", password:""});
     const navigate = useNavigate();
     
-    function handleInput (e){
-        //console.log(e);
-        let newUserData = userData;
-        newUserData[e.target.name] = e.target.value;
-        //console.log(newUserData);
-        setUserData(newUserData);
-    }
+    //ovo iz nekog razloga nije radilo. nismo sigurni sto ali mozemo da proverimo zasto da bi znali zasto
+    // function handleInput (e){
+    //     //console.log(e);
+    //     let newUserData = userData;
+    //     newUserData[e.target.name] = e.target.value;
+    //     //console.log(newUserData);
+    //     setUserData(newUserData);
+    // }
+
+    const handleChange = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value });
+      };
+
 
     function handleLogIn (e) {
         e.preventDefault();
+        console.log(userData);
         //axios.defaults.withCredentials = true;
         axios.post("http://127.0.0.1:8000/api/login", userData)
         .then((res) => {
@@ -40,14 +47,16 @@ const LoginPage = () => {
             placeholder="Email" 
             className="login-input"
             name="email" 
-            onInput = {handleInput}
+            value={userData.email}
+            onChange = {handleChange}
         />
         <input 
             type="password" 
             placeholder="Lozinka" 
             className="login-input"
             name = "password"
-            onInput = {handleInput}
+            value={userData.password}
+            onChange = {handleChange}
         />
         <button type="submit" className="login-button">Prijavi se</button>
         <div className="register-link">

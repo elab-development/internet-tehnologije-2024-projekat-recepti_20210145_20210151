@@ -16,10 +16,18 @@ class Recept extends Model
         'vreme_pripreme',
         'opis_pripreme'
     ];
+    protected $table = 'recepts'; // Naziv tabele u bazi
+    protected $primaryKey = 'id'; // Laravel podrazumevano koristi 'id', tako da je ovo ispravno
+    public $timestamps = true;
+    
     public function proizvodi()
     {
                 return $this->belongsToMany(Proizvod::class, 'proizvod_recept', 'recept_id', 'proizvod_id')
-                ->withPivot('kolicina')// Povlačenje količine iz pivot tabele
+                ->withPivot('kolicina', 'merna_jedinica')// Povlačenje količine iz pivot tabele
                 ->withTimestamps();  
     }
+    /*public function proizvodRecept()
+    {
+        return $this->hasMany(ProizvodRecept::class, 'recept_id');
+    }*/
 }

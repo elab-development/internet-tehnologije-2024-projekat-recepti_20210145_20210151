@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Proizvod extends Model
 {
     use HasFactory;
+
+    protected $table = 'proizvods'; // Laravel očekuje 'proizvods' umesto 'proizvodi'
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
     protected $fillable = [
         'naziv',
         'kategorija',
@@ -18,9 +23,10 @@ class Proizvod extends Model
     public function recepti()
     {
         return $this->belongsToMany(Recept::class, 'proizvod_recept','proizvod_id', 'recept_id')
-                ->withPivot('kolicina')  // Da bismo dohvatili količinu iz pivot tabele
+                ->withPivot('kolicina','merna_jedinica') // Da bismo dohvatili količinu iz pivot tabele
                 ->withTimestamps();      // Ako su potrebni timestampi
     }
+
     public function korpe()
     {
         return $this->belongsToMany(Korpa::class, 'proizvod_korpas','proizvod_id', 'korpa_id')
