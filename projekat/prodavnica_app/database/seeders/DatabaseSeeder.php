@@ -13,9 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
-
-
+        /*
         $this->call(KorpaSeeder::class);
         $this->call(KupovinaSeeder::class);
         $this->call(ProizvodSeeder::class);
@@ -24,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProizvodReceptSeeder::class);
         $this->call(ProizvodKorpaSeeder::class);
         $this->call(ProizvodKupovinaSeeder::class);
-        
+        */
         
         
         

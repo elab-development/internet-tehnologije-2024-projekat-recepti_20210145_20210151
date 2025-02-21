@@ -37,8 +37,9 @@ class ReceptSeeder extends Seeder
         // Ubacivanje recepata u bazu
         foreach ($recepti as $recept) {
             Recept::create($recept);
-        }*/
+        }
 
         Recept::factory()->count(50)->create();
+        */
     }
 }

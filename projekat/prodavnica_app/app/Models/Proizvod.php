@@ -19,6 +19,7 @@ class Proizvod extends Model
         'cena',
         'dostupna_kolicina',
         'tip',
+        'slika',
     ];
     public function recepti()
     {

@@ -38,7 +38,8 @@ class ProizvodSeeder extends Seeder
 
         foreach ($proizvodi as $proizvod) {
             Proizvod::create($proizvod);
-        }*/
+        }
         Proizvod::factory()->count(5)->create();
+        */
     }
 }
