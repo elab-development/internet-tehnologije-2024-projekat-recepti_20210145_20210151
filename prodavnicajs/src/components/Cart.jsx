@@ -26,7 +26,7 @@ const Cart = () => {
                     {cart.map(item => (
                         
                         <div key={item.proizvod_id} className="cart-item">
-                            <img src={item.slika || "https://picsum.photos/50"} alt={item.naziv} />
+                            <img src={item.slika} alt={item.naziv} />
                             <p>{item.naziv}</p>
                             <p>{item.cena} RSD</p>
                             <div>

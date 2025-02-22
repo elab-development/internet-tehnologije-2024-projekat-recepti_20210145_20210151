@@ -16,6 +16,7 @@ use App\Http\Resources\KorpaResource;
 use Validator;
 use App\Http\Resources\KupovinaResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 class ProductController extends Controller
@@ -48,7 +49,8 @@ class ProductController extends Controller
     ]);
 }*/
 
-public function getAllProducts(Request $request)
+//radi, ali ne upisuje u bazu
+/*public function getAllProducts(Request $request)
 {
     // Parametar 'per_page' omogućava korisnicima da biraju broj proizvoda po stranici
     $perPage = $request->input('per_page', 10); // Ako nije prosleđen, koristi se podrazumevani broj proizvoda po stranici (10)
@@ -80,10 +82,10 @@ public function getAllProducts(Request $request)
             'per_page' => $proizvodi->perPage(),
         ]
     ]);
-}
+}*/
 
-
-public function store(Request $request)
+//funkcija radi, ali menjam jer ne upisuje url u bazu
+/*public function store(Request $request)
 {
     // Validacija podataka
     $validated = $request->validate([
@@ -105,14 +107,95 @@ public function store(Request $request)
     ]);
 
     // Povezivanje slike sa proizvodom prema imenu proizvoda
-    $proizvod->slika = asset('storage/proizvodi_image/' . $proizvod->naziv . '.jpg'); // Pretpostavljamo da je slika u formatu .jpg
+    $proizvod->slika = asset('storage/proizvodi_image/' . $proizvod->naziv . '.jpeg'); // Pretpostavljamo da je slika u formatu .jpeg
     $proizvod->save(); // Snima promenjeni proizvod sa URL-om za sliku
 
     return response()->json([
         'message' => 'Proizvod je uspešno dodat.',
         'proizvod' => $proizvod
     ], 201);
-}
+}*/
+
+//stavlja pravu sliku
+public function store(Request $request)
+{
+    // Validacija podataka
+    $validated = $request->validate([
+        'naziv' => 'required|string|max:255',
+        'kategorija' => 'required|string|max:255',
+        'cena' => 'required|numeric|min:0',
+        'dostupna_kolicina' => 'required|integer|min:1',
+        'tip' => 'required|string|in:organski,neorganski',
+    ]);
+
+    // Kreiranje novog proizvoda u bazi
+    $proizvod = Proizvod::create([
+        'naziv' => $validated['naziv'],
+        'kategorija' => $validated['kategorija'],
+        'cena' => $validated['cena'],
+        'dostupna_kolicina' => $validated['dostupna_kolicina'],
+        'tip' => $validated['tip'],
+        'slika' => null, // Privremeno NULL
+    ]);
+
+    // Generisanje naziva slike i putanje
+    $nazivSlike = Str::slug($validated['naziv']) . '.jpeg';
+    $putanjaSlike = 'proizvodi_image/' . $nazivSlike;
+
+    // Provera da li slika postoji u storage direktorijumu
+    if (Storage::disk('public')->exists($putanjaSlike)) {
+        $proizvod->slika = asset('storage/' . $putanjaSlike); // Generisanje URL-a za sliku
+    } else {
+        $proizvod->slika = asset('storage/proizvodi_image/default.jpg'); // Podrazumevana slika
+    }
+
+        // Čuvanje ispravne putanje slike u bazi
+        $proizvod->save();
+
+        return response()->json([
+            'message' => 'Proizvod je uspešno dodat.',
+            'proizvod' => $proizvod
+        ], 201);
+    }
+
+
+    public function getAllProducts(Request $request)
+    {
+        // Parametar 'per_page' omogućava korisnicima da biraju broj proizvoda po stranici
+        $perPage = $request->input('per_page', 10); // Ako nije prosleđen, koristi se podrazumevani broj proizvoda po stranici (10)
+
+        // Paginacija proizvoda sa željenim brojem proizvoda po stranici
+        $proizvodi = Proizvod::paginate($perPage);
+
+        // Provera da li su proizvodi prazni
+        if ($proizvodi->isEmpty()) {
+            return response()->json(['message' => 'Nema dostupnih proizvoda.'], 404);
+        }
+
+        // Dodaj punu URL putanju slike za svaki proizvod
+        foreach ($proizvodi as $proizvod) {
+            if (!$proizvod->slika) {
+                // Ako proizvod nema sliku, poveži ga sa slikom na osnovu naziva proizvoda
+                $proizvod->slika = asset('storage/proizvodi_image/' . Str::slug($proizvod->naziv) . '.jpeg');
+            }
+        }
+
+        // Vraćanje proizvoda zajedno sa informacijama o paginaciji
+        return response()->json([
+            'message' => 'Lista svih proizvoda.',
+            'data' => $proizvodi->items(),  // Vraća samo proizvode za trenutnu stranicu
+            'pagination' => [
+                'current_page' => $proizvodi->currentPage(),
+                'last_page' => $proizvodi->lastPage(),
+                'total' => $proizvodi->total(),
+                'per_page' => $proizvodi->perPage(),
+            ]
+        ]);
+    }
+
+
+
+
 
 
 
@@ -205,6 +288,12 @@ public function store(Request $request)
         return response()->json(['message' => 'Nema proizvoda koji odgovaraju kriterijumima pretrage.'], 404);
     }
 
+    // Dodavanje slike ako nije postavljena
+    foreach ($proizvodi as $proizvod) {
+        if (!$proizvod->slika) {
+            $proizvod->slika = asset('storage/proizvodi_image/' . $proizvod->naziv . '.jpeg');
+        }
+    }
     // Vraćanje podataka o proizvodima i paginaciji
     return response()->json([
         'message' => 'Sistem je pronašao proizvode.',

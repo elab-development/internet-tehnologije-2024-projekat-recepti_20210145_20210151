@@ -12,10 +12,14 @@ function OneProduct({ product }) {
         await addToCart(product);  // Pozovi funkciju addToCart iz CartContext-a
     };
 
+    console.log(product);
 
     return (
         <div className="card">
-            <img className="card-img" src={product.slika || "https:/picsum.photos/200"} alt={product.naziv} />
+            {/*<img className="card-img" src={`http://localhost:8000/storage/proizvodi_image/${product.slika}`} alt={product.naziv} />*/}
+            <img className="card-img" src={product.slika} alt={product.naziv} />
+
+
             <div className="card-body">
                 <h3 className="card-title">{product.naziv}</h3>
                 <p className="card-text">{product.kategorija}</p>

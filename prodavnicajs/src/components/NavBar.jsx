@@ -39,6 +39,9 @@ const NavBar = () => {
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Voce">Voće</Link></li>
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Povrce">Povrće</Link></li>
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Meso">Meso</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Mlecni-proizvod">Mlečni proizvod</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Zacin">Začin</Link></li>
+                        
                     </ul>
                 </li>
                 <li className="navbar-item dropdown">

@@ -42,6 +42,7 @@ export const CartProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error("Nema tokena, korisnik nije ulogovan!");
+                alert("Morate biti prijavljeni da biste mogli uspešno obaviti kupovinu!");
                 return;
             }
         
