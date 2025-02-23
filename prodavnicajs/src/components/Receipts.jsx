@@ -6,7 +6,7 @@ const Receipts = () => {
   const [pagination, setPagination] = useState({}); // Inicijalizujemo kao objekat
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/recepti/pretraga?per_page=10")
+    fetch("http://localhost:8000/api/recepti/pretraga?per_page=9")
       .then((response) => response.json())
       .then((data) => {
         console.log("Dobijeni podaci:", data);
@@ -29,7 +29,7 @@ const Receipts = () => {
   const handlePageChange = (page) => {
     if (page < 1 || page > pagination?.last_page) return;
 
-    fetch(`http://localhost:8000/api/recepti/pretraga?per_page=10&page=${page}`)
+    fetch(`http://localhost:8000/api/recepti/pretraga?per_page=9&page=${page}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.recepti && Array.isArray(data.recepti)) {
@@ -53,7 +53,7 @@ const Receipts = () => {
             <div key={receipt.id} className="recipe-card">
               <div className="recipe-image">
                 <img
-                  src={`https://picsum.photos/300/200?random=${index}`}
+                  src={receipt.slika}
                   alt="Recept"
                 />
               </div>

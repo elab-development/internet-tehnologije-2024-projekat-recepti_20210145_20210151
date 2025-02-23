@@ -63,7 +63,7 @@ const SearchReceipts = () => {
             <div key={receipt.id} className="recipe-card">
               <div className="recipe-image">
                 <img
-                  src={`https://picsum.photos/300/200?random=${index}`}
+                  src={receipt.slika}
                   alt="Recept"
                 />
               </div>

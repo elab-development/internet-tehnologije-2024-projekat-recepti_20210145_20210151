@@ -37,7 +37,7 @@ const OneReceipt = () => {
     <div className="one-receipt-container">
       <img
         className="one-receipt-image"
-        src={`https://picsum.photos/600/400?random=${id}`}
+        src={receipt.slika}
         alt="Recept"
       />
       <div className="one-receipt-content">

@@ -39,8 +39,11 @@ const NavBar = () => {
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Voce">Voće</Link></li>
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Povrce">Povrće</Link></li>
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Meso">Meso</Link></li>
-                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Mlecni-proizvod">Mlečni proizvod</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Pekarski proizvod">Pekarski proizvod</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Mlecni proizvod">Mlečni proizvod</Link></li>
                         <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Zacin">Začin</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Pice">Piće</Link></li>
+                        <li className="dropdown-item"><Link to="/proizvodi/pretraga?kategorija=Slatkis">Slatkiš</Link></li>
                         
                     </ul>
                 </li>
@@ -49,8 +52,7 @@ const NavBar = () => {
                     <ul className="dropdown-menu">
                         <li className="dropdown-item"><Link to="/recepti/pretraga?tip_jela=predjelo">Predjelo</Link></li>
                         <li className="dropdown-item"><Link to="/recepti/pretraga?tip_jela=glavno jelo">Glavno jelo</Link></li>
-                        <li className="dropdown-item"><Link to="/recepti/pretraga?tip_jela=desert">Desert</Link></li>
-                        <li className="dropdown-item"><Link to="/recepti/pretraga?tip_jela=salata">Salata</Link></li>
+                        <li className="dropdown-item"><Link to="/recepti/pretraga?tip_jela=dezert">Dezert</Link></li>
                     </ul>
                 </li>
                 <li className="navbar-item">

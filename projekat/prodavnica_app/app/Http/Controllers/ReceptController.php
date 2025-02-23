@@ -183,7 +183,7 @@ class ReceptController extends Controller
     }
 
     // Paginacija – uzimanje parametra 'per_page' iz zahteva (podrazumevano 10)
-    $perPage = $request->input('per_page', 10);
+    $perPage = $request->input('per_page', 9);
     $recepti = $query->paginate($perPage);
 
     // Ako nema rezultata, vratiti poruku o grešci
