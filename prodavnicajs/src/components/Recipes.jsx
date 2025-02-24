@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Receipts = () => {
-  const [receipts, setReceipts] = useState([]);
+const Recipes = () => {
+  const [recipes, setRecipes] = useState([]);
   const [pagination, setPagination] = useState({}); // Inicijalizujemo kao objekat
 
   useEffect(() => {
@@ -12,16 +12,16 @@ const Receipts = () => {
         console.log("Dobijeni podaci:", data);
 
         if (data.recepti && Array.isArray(data.recepti)) {
-          setReceipts(data.recepti);
+          setRecipes(data.recepti);
           setPagination(data.pagination || {}); // Dodajemo proveru
         } else {
           console.error("Neočekivan format podataka:", data);
-          setReceipts([]);
+          setRecipes([]);
         }
       })
       .catch((error) => {
         console.error("Greška pri učitavanju recepata:", error);
-        setReceipts([]);
+        setRecipes([]);
       });
   }, []); // Ovdje bi trebalo da se postavi samo prilikom prvog učitavanja
 
@@ -33,7 +33,7 @@ const Receipts = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.recepti && Array.isArray(data.recepti)) {
-          setReceipts(data.recepti);
+          setRecipes(data.recepti);
           setPagination(data.pagination || {}); // Dodajemo proveru
         }
       })
@@ -43,25 +43,25 @@ const Receipts = () => {
   };
 
   return (
-    <div className="receipts-container">
+    <div className="recipes-container">
       <h2 className="title">Svi Recepti</h2>
-      {receipts.length === 0 ? (
+      {recipes.length === 0 ? (
         <p className="no-recipes">Nema dostupnih recepata.</p>
       ) : (
         <div className="recipes-grid">
-          {receipts.map((receipt, index) => (
-            <div key={receipt.id} className="recipe-card">
+          {recipes.map((recipe, index) => (
+            <div key={recipe.id} className="recipe-card">
               <div className="recipe-image">
                 <img
-                  src={receipt.slika}
+                  src={recipe.slika}
                   alt="Recept"
                 />
               </div>
               <div className="recipe-info">
-                <h3 className="recipe-title">{receipt.naziv}</h3>
-                <p className="recipe-type">{receipt.tip_jela}</p>
-                <p className="recipe-time">Vreme pripreme: {receipt.vreme_pripreme} min</p>
-                <Link to={`/recepti/${receipt.id}`} className="view-button">
+                <h3 className="recipe-title">{recipe.naziv}</h3>
+                <p className="recipe-type">{recipe.tip_jela}</p>
+                <p className="recipe-time">Vreme pripreme: {recipe.vreme_pripreme} min</p>
+                <Link to={`/recepti/${recipe.id}`} className="view-button">
                   Prikaži više
                 </Link>
               </div>
@@ -100,4 +100,4 @@ const Receipts = () => {
   );
 };
 
-export default Receipts;
+export default Recipes;

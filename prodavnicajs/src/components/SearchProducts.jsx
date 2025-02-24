@@ -1,79 +1,155 @@
-
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom'; // Za uzimanje parametara iz URL-a
 import OneProduct from './OneProduct';
 
 const SearchProducts = () => {
     const location = useLocation(); // Koristi useLocation za pristup URL-u
     const [products, setProducts] = useState([]);
-    const [pagination, setPagination] = useState({}); // State za paginaciju
-    const [currentPage, setCurrentPage] = useState(1); // Trenutna stranica
+    const [pagination, setPagination] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [keyword, setKeyword] = useState('');
+    const [type, setType] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    const [inStock, setInStock] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    useEffect(() => {
-        const fetchProducts = async (page = 1) => {
+    // Funkcija za fetch proizvoda sa odgovarajuće stranice
+    const fetchProducts = useCallback(async (page = 1) => {
+        try {
             const queryParams = new URLSearchParams(location.search);
-            const category = queryParams.get('kategorija');
-            const url = `http://localhost:8000/api/proizvodi/pretraga?kategorija=${category}&page=${page}`;
+            const category = queryParams.get('kategorija');  // Pretražujemo proizvode po kategoriji iz URL-a
 
-            console.log('Poslati url:', url);  // Ispisivanje URL-a za debug
-
+            // Slanje zahtev sa svim parametrima (kategorija + filtriranje)
+            const url = `http://localhost:8000/api/proizvodi/pretraga?kategorija=${category}&keyword=${keyword}&tip=${type}&cena_min=${minPrice}&cena_max=${maxPrice}&dostupna_kolicina=${inStock ? 1 : 0}&page=${page}`;
             const response = await fetch(url);
-            const data = await response.json();
 
-            if (data.data) {
-                setProducts(data.data);
-                setPagination(data.pagination || {}); // Spremi podatke o paginaciji
+            if (response.status === 404) {
+                setErrorMessage("Nema proizvoda koji zadovoljavaju vaše kriterijume.");
+                setProducts([]);
+            } else {
+                const data = await response.json();
+                if (data.data) {
+                    setProducts(data.data);
+                    setPagination(data.pagination);
+                    setErrorMessage('');
+                } else {
+                    setErrorMessage("Nema proizvoda koji zadovoljavaju vaše kriterijume.");
+                }
             }
-        };
+        } catch (error) {
+            console.error("Došlo je do greške:", error);
+            setErrorMessage("Došlo je do greške prilikom pretrage.");
+        }
+    }, [keyword, type, minPrice, maxPrice, inStock, location.search]);
 
-        fetchProducts(currentPage); // Pozivamo fetch za trenutnu stranicu
-    }, [location, currentPage]); // useEffect zavisi od location i currentPage
+    // useEffect za inicijalni fetch proizvoda
+    useEffect(() => {
+        fetchProducts(currentPage);
+    }, [currentPage, fetchProducts]);
 
-    // Funkcija za promenu stranice
-    const handlePageChange = (page) => {
-        if (page < 1 || page > pagination.last_page) return; // Proveravamo da li je stranica unutar granica
-        setCurrentPage(page);
+    const handleSearch = () => {
+        setCurrentPage(1);
+        fetchProducts(1);  // Ponovno pozivanje pretrage sa novim ključem za pretragu
+    };
+
+    const handleFilter = () => {
+        setCurrentPage(1);
+        fetchProducts(1);  // Ponovno pozivanje sa filtrima
+    };
+
+    const handlePrevPage = () => {
+        if (pagination.current_page > 1) {
+            setCurrentPage(pagination.current_page - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (pagination.current_page < pagination.last_page) {
+            setCurrentPage(pagination.current_page + 1);
+        }
     };
 
     return (
         <div>
+            {/* Pretraga */}
+            <div className="search-container">
+                <input 
+                    type="text" 
+                    placeholder="Pretraži proizvode..." 
+                    value={keyword} 
+                    onChange={(e) => setKeyword(e.target.value)} 
+                    className="search-input"
+                />
+                <button onClick={handleSearch} className="search-button">Pretraži</button>
+            </div>
+
+            {/* Filtriranje */}
+            <div className="filter-container">
+                <select 
+                    className="filter-select" 
+                    value={type} 
+                    onChange={(e) => setType(e.target.value)}
+                >
+                    <option value="">Tip</option>
+                    <option value="organski">Organski</option>
+                    <option value="neorganski">Neorganski</option>
+                </select>
+                <input 
+                    type="number" 
+                    placeholder="Min. cena" 
+                    value={minPrice} 
+                    onChange={(e) => setMinPrice(e.target.value)} 
+                    className="filter-input"
+                />
+                <input 
+                    type="number" 
+                    placeholder="Max. cena" 
+                    value={maxPrice} 
+                    onChange={(e) => setMaxPrice(e.target.value)} 
+                    className="filter-input"
+                />
+                <label className="in-stock-label">
+                    Dostupno
+                    <input 
+                        type="checkbox" 
+                        checked={inStock} 
+                        onChange={(e) => setInStock(e.target.checked)} 
+                        className="in-stock-checkbox"
+                    />
+                </label>
+                <button onClick={handleFilter} className="filter-button">Primeni filtere</button>
+            </div>
+
+            {/* Prikaz proizvoda */}
             <div className="all-products">
-                {products.length > 0 ? (
-                    products.map((product) => (
-                        <OneProduct key={product.id} product={product} />
-                    ))
+                {errorMessage ? (
+                    <p>{errorMessage}</p>  // Prikazujemo poruku o grešci ako postoji
                 ) : (
-                    <p>Nema dostupnih proizvoda za ovu kategoriju.</p>
+                    products.length > 0 ? (
+                        products.map(product => (
+                            <OneProduct key={product.id} product={product} />
+                        ))
+                    ) : (
+                        <p>Nema proizvoda.</p>
+                    )
                 )}
             </div>
 
             {/* Paginacija */}
-            {pagination.total > 0 && (
-                <div className="pagination">
-                    {/* Dugme za prethodnu stranicu */}
-                    {pagination.current_page > 1 && (
-                        <button onClick={() => handlePageChange(pagination.current_page - 1)}>
-                            Prethodna
-                        </button>
-                    )}
+            <div className="pagination">
+                {pagination.current_page > 1 && (
+                    <button onClick={handlePrevPage}>Prethodna</button>
+                )}
 
-                    {/* Prikaz trenutne stranice */}
-                    <span>{pagination.current_page} / {pagination.last_page}</span>
+                <span>{pagination.current_page} / {pagination.last_page}</span>
 
-                    {/* Dugme za sledeću stranicu */}
-                    {pagination.current_page < pagination.last_page && (
-                        <button onClick={() => handlePageChange(pagination.current_page + 1)}>
-                            Sledeća
-                        </button>
-                    )}
-                </div>
-            )}
+                {pagination.current_page < pagination.last_page && (
+                    <button onClick={handleNextPage}>Sledeća</button>
+                )}
+            </div>
         </div>
     );
 };
 
 export default SearchProducts;
-
-

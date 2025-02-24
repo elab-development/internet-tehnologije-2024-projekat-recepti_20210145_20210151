@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"; // Za uzimanje parametara iz URL-a
 import { Link } from "react-router-dom";
 
-const SearchReceipts = () => {
+const SearchRecipes = () => {
   const location = useLocation(); // Koristi useLocation za pristup URL-u
-  const [receipts, setReceipts] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [pagination, setPagination] = useState({}); // Dodajemo stanje za paginaciju
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1); // Trenutna stranica
@@ -28,16 +28,16 @@ const SearchReceipts = () => {
 
         // Ako su podaci u formatu koji se očekuje
         if (Array.isArray(data.recepti)) {
-          setReceipts(data.recepti);
+          setRecipes(data.recepti);
           setPagination(data.pagination || {}); // Spremi paginaciju, ako postoji
         } else {
           console.error("Neočekivan format podataka:", data);
-          setReceipts([]);
+          setRecipes([]);
         }
       })
       .catch((error) => {
         console.error("Greška pri učitavanju recepata:", error);
-        setReceipts([]);
+        setRecipes([]);
       })
       .finally(() => {
         setLoading(false); // Završeno učitavanje
@@ -51,27 +51,27 @@ const SearchReceipts = () => {
   };
 
   return (
-    <div className="receipts-container">
+    <div className="recipes-container">
       <h2 className="title">Recepti - {new URLSearchParams(location.search).get("tip_jela")}</h2>
       {loading ? (
         <p>Učitavanje...</p>
-      ) : receipts.length === 0 ? (
+      ) : recipes.length === 0 ? (
         <p className="no-recipes">Nema dostupnih recepata za ovaj tip jela.</p>
       ) : (
         <div className="recipes-grid">
-          {receipts.map((receipt, index) => (
-            <div key={receipt.id} className="recipe-card">
+          {recipes.map((recipe, index) => (
+            <div key={recipe.id} className="recipe-card">
               <div className="recipe-image">
                 <img
-                  src={receipt.slika}
+                  src={recipe.slika}
                   alt="Recept"
                 />
               </div>
               <div className="recipe-info">
-                <h3 className="recipe-title">{receipt.naziv}</h3>
-                <p className="recipe-type">{receipt.tip_jela}</p>
-                <p className="recipe-time">Vreme pripreme: {receipt.vreme_pripreme} min</p>
-                <Link to={`/recepti/${receipt.id}`} className="view-button">
+                <h3 className="recipe-title">{recipe.naziv}</h3>
+                <p className="recipe-type">{recipe.tip_jela}</p>
+                <p className="recipe-time">Vreme pripreme: {recipe.vreme_pripreme} min</p>
+                <Link to={`/recepti/${recipe.id}`} className="view-button">
                   Prikaži više
                 </Link>
               </div>
@@ -105,4 +105,4 @@ const SearchReceipts = () => {
   );
 };
 
-export default SearchReceipts;
+export default SearchRecipes;

@@ -8,11 +8,11 @@ import SearchProducts from './components/SearchProducts';
 import Cart from './components/Cart';
 import { CartProvider } from './context/CartContext';
 import Purchase from './components/Purchase';
-import Receipts from "./components/Receipts";
-import OneReceipt from "./components/OneReceipt";
+import Recipes from "./components/Recipes";
+import OneRecipe from "./components/OneRecipe";
 
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import SearchReceipts from './components/SearchReceipts';
+import SearchRecipes from './components/SearchRecipes';
 
 function App() {
 
@@ -28,9 +28,9 @@ function App() {
         <Route path="/proizvodi/pretraga" element={<SearchProducts />} />
         <Route path="/korpa" element={<Cart />} />
         <Route path="/kupovina" element={<Purchase />} />
-        <Route path="/recepti" element={<Receipts />} />
-        <Route path="/recepti/:id" element={<OneReceipt />} />
-        <Route path="/recepti/pretraga" element={<SearchReceipts />} />
+        <Route path="/recepti" element={<Recipes />} />
+        <Route path="/recepti/:id" element={<OneRecipe />} />
+        <Route path="/recepti/pretraga" element={<SearchRecipes />} />
         
 
 

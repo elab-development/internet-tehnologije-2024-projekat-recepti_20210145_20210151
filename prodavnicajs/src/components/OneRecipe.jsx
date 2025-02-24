@@ -2,9 +2,9 @@ import { FaClock } from 'react-icons/fa'; // Dodaj FaClock
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const OneReceipt = () => {
+const OneRecipe = () => {
   const { id } = useParams();
-  const [receipt, setReceipt] = useState(null);
+  const [recipe, setRecipe] = useState(null);
   const [products, setProducts] = useState([]);
   
 
@@ -22,7 +22,7 @@ const OneReceipt = () => {
           console.error("API ne vraća 'proizvodi'!");
           return;
         }
-        setReceipt(data);
+        setRecipe(data);
         setProducts(data.proizvodi || []); // Postavljamo proizvode iz odgovora
         console.log("Setovani proizvodi:", data.proizvodi);
       })
@@ -31,24 +31,24 @@ const OneReceipt = () => {
 
   console.log("Products:", products);
 
-  if (!receipt) return <p className="loading">Učitavanje...</p>;
+  if (!recipe) return <p className="loading">Učitavanje...</p>;
 
   return (
-    <div className="one-receipt-container">
+    <div className="one-recipe-container">
       <img
-        className="one-receipt-image"
-        src={receipt.slika}
+        className="one-recipe-image"
+        src={recipe.slika}
         alt="Recept"
       />
-      <div className="one-receipt-content">
-        <h2 className="one-receipt-title">{receipt.naziv}</h2>
-        <p className="one-receipt-type">{receipt.tip_jela}</p>
-        <p className="one-receipt-time">
-          <FaClock className="time-icon" /> {receipt.vreme_pripreme} min
+      <div className="one-recipe-content">
+        <h2 className="one-recipe-title">{recipe.naziv}</h2>
+        <p className="one-recipe-type">{recipe.tip_jela}</p>
+        <p className="one-recipe-time">
+          <FaClock className="time-icon" /> {recipe.vreme_pripreme} min
         </p>
   
         {/* Sekcija za proizvode */}
-        <h3 className="one-receipt-subtitle">Potrebni proizvodi:</h3>
+        <h3 className="one-recipe-subtitle">Potrebni proizvodi:</h3>
         <ul className="products-list">
           {products.map((product) => {
             console.log("Proizvod:", product); // Proverite da li je proizvod ispravan
@@ -66,12 +66,12 @@ const OneReceipt = () => {
           })}
         </ul>
   
-        <h3 className="one-receipt-subtitle">Opis pripreme:</h3>
-        <p className="one-receipt-description">{receipt.opis_pripreme}</p>
+        <h3 className="one-recipe-subtitle">Opis pripreme:</h3>
+        <p className="one-recipe-description">{recipe.opis_pripreme}</p>
       </div>
     </div>
   );
   
 };
 
-export default OneReceipt;
+export default OneRecipe;
