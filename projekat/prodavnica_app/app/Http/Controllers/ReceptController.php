@@ -10,40 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ReceptController extends Controller
 {
-
-    //radi bez slike
-    /*public function store(Request $request)
-    {
-        // Validacija podataka
-        $request->validate([
-            'naziv' => 'required|string|max:255',
-            'tip_jela' => 'required|string|max:255',
-            'vreme_pripreme' => 'required|integer|min:1',
-            'opis_pripreme' => 'required|string',
-            'proizvodi' => 'required|array',
-            'proizvodi.*.proizvod_id' => 'exists:proizvods,id', 
-            'proizvodi.*.kolicina' => 'required|numeric|min:0', 
-        ]);
-
-        // Kreiranje recepta
-        $recept = Recept::create([
-            'naziv' => $request->naziv,
-            'tip_jela' => $request->tip_jela,
-            'vreme_pripreme' => $request->vreme_pripreme,
-            'opis_pripreme' => $request->opis_pripreme,
-        ]);
-
-        foreach ($request->proizvodi as $proizvod) {
-            $recept->proizvodi()->attach($proizvod['proizvod_id'], ['kolicina' => $proizvod['kolicina']]);
-        }
-
-        // Povratni odgovor
-        return response()->json([
-            'message' => 'Recept uspešno kreiran!',
-            'recept' => $recept
-        ], 201);
-    }*/
-
     public function store(Request $request)
 {
     // Validacija podataka
@@ -127,45 +93,6 @@ class ReceptController extends Controller
         ]);
     }
 
-    // radi ali ne sa slkom
-    /*public function pretraga(Request $request)
-    {
-    // Validacija parametara filtera
-    $validatedData = $request->validate([
-        'tip_jela' => 'nullable|string|in:predjelo,glavno jelo,desert,salata',
-        'per_page' => 'nullable|integer|min:1', // Dodajemo validaciju za broj stavki po stranici
-    ]);
-
-    // Pretraga u bazi sa primenom filtera
-    $query = Recept::query();
-
-    // Ako je filter tip jela prisutan, filtriraj rezultate
-    if ($request->has('tip_jela')) {
-        $query->where('tip_jela', $request->input('tip_jela'));
-    }
-
-    // Paginacija (uzimanje parametra 'per_page' iz zahteva, podrazumevano 10)
-    $perPage = $request->input('per_page', 10);
-    $recepti = $query->paginate($perPage);
-
-    // Ako nema rezultata, vratiti odgovarajuću poruku
-    if ($recepti->isEmpty()) {
-        return response()->json([
-            'message' => 'Nema rezultata za odabrani filter.',
-        ], 404);
-    }
-
-    // Vraćanje rezultata pretrage sa paginacijom
-    return response()->json([
-        'recepti' => $recepti->items(),
-        'pagination' => [
-            'current_page' => $recepti->currentPage(),
-            'last_page' => $recepti->lastPage(),
-            'total' => $recepti->total(),
-            'per_page' => $recepti->perPage(),
-        ],
-    ]);
-    }*/
     public function pretraga(Request $request)
 {
     // Validacija parametara filtera
@@ -205,11 +132,9 @@ class ReceptController extends Controller
     ]);
 }
 
-
-
 //Ucitavanje pojedinacnih recepata
-    public function show($id)
-    {
+public function show($id)
+{
     $recept = Recept::with('proizvodi')->findOrFail($id);
     //dd($recept->toArray());
 
@@ -218,7 +143,77 @@ class ReceptController extends Controller
     }
 
     return response()->json($recept);
+}
+
+/*public function findRecipes(Request $request)
+{
+    $ingredients = $request->input('ingredients');
+
+    if (empty($ingredients)) {
+        return response()->json([], 200);
     }
+
+    // Dohvati recepte koji sadrže bar jedan od unetih sastojaka
+    $recipes = Recept::with('proizvodi')
+        ->whereHas('proizvodi', function ($query) use ($ingredients) {
+            $query->whereIn('naziv', $ingredients);
+        })
+        ->get();
+
+    // Računanje poklapanja sastojaka
+    $recipes = $recipes->map(function ($recipe) use ($ingredients) {
+        $recipe->matchCount = $recipe->proizvodi
+            ->whereIn('naziv', $ingredients)
+            ->count();
+        return $recipe;
+    });
+
+    // Sortiranje recepata po broju poklapanja (opadajuće)
+    $sortedRecipes = $recipes->sortByDesc('matchCount')->values();
+
+    return response()->json($sortedRecipes);
+}*/
+public function findRecipes(Request $request)
+{
+    $ingredients = $request->input('ingredients');
+    $tip_jela = $request->input('tip_jela');  // Dobavi tip jela iz zahteva
+
+    if (empty($ingredients) && empty($tip_jela)) {
+        return response()->json([], 200);
+    }
+
+    // Kreiraj upit za pretragu
+    $query = Recept::with('proizvodi');
+
+    // Filtriraj po sastojcima
+    if (!empty($ingredients)) {
+        $query->whereHas('proizvodi', function ($query) use ($ingredients) {
+            $query->whereIn('naziv', $ingredients);
+        });
+    }
+
+    // Filtriraj po tipu jela, ako je parametar prisutan
+    if (!empty($tip_jela)) {
+        $query->where('tip_jela', $tip_jela);
+    }
+
+    // Dohvati recepte
+    $recipes = $query->get();
+
+    // Računanje broja poklapanja sastojaka
+    $recipes = $recipes->map(function ($recipe) use ($ingredients) {
+        $recipe->matchCount = $recipe->proizvodi
+            ->whereIn('naziv', $ingredients)
+            ->count();
+        return $recipe;
+    });
+
+    // Sortiranje recepata po broju poklapanja (opadajuće)
+    $sortedRecipes = $recipes->sortByDesc('matchCount')->values();
+
+    return response()->json($sortedRecipes);
+}
+
 
 
     

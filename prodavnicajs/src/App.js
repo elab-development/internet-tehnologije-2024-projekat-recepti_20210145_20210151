@@ -10,7 +10,7 @@ import { CartProvider } from './context/CartContext';
 import Purchase from './components/Purchase';
 import Recipes from "./components/Recipes";
 import OneRecipe from "./components/OneRecipe";
-
+import RecipeFinder from './components/RecipeFinder';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import SearchRecipes from './components/SearchRecipes';
 
@@ -31,7 +31,7 @@ function App() {
         <Route path="/recepti" element={<Recipes />} />
         <Route path="/recepti/:id" element={<OneRecipe />} />
         <Route path="/recepti/pretraga" element={<SearchRecipes />} />
-        
+        <Route path="/recipe-finder" element={<RecipeFinder />} />
 
 
        </Routes>

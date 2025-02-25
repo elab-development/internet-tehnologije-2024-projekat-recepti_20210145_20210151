@@ -41,17 +41,18 @@ const Products = () => {
     // useEffect za inicijalni fetch proizvoda
     useEffect(() => {
         fetchProducts(currentPage); // Pozivamo fetch sa trenutnom stranicom
+        //setCurrentPage(1);
     }, [currentPage, fetchProducts]);
 
-    const handleSearch = () => {
+    /*const handleSearch = () => {
         setCurrentPage(1); // Resetuj na prvu stranicu kada se pretražuje
         fetchProducts(1);
-    };
+    };*/
 
-    const handleFilter = () => {
+    /*const handleFilter = () => {
         setCurrentPage(1); // Resetuj na prvu stranicu kada se koristi filter
         fetchProducts(1);
-    };
+    };*/
 
     const handlePrevPage = () => {
         if (pagination.current_page > 1) {
@@ -76,7 +77,7 @@ const Products = () => {
                     onChange={(e) => setKeyword(e.target.value)} 
                     className="search-input"
                 />
-                <button onClick={handleSearch} className="search-button">Pretraži</button>
+                {/*<button onClick={handleSearch} className="search-button">Pretraži</button>*/}
             </div>
 
             {/* Filtriranje */}
@@ -113,7 +114,7 @@ const Products = () => {
                         className="in-stock-checkbox"
                     />
                 </label>
-                <button onClick={handleFilter} className="filter-button">Primeni filtere</button>
+               {/* <button onClick={handleFilter} className="filter-button">Primeni filtere</button>*/}
             </div>
 
             {/* Prikaz proizvoda */}

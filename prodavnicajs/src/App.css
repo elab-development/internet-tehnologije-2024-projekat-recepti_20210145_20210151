@@ -56,7 +56,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: #ffc1cc;
   padding: 20px;
 }
 
@@ -118,6 +118,20 @@ body {
 .login-button:hover {
   background-color: #f61d69;
 }
+.register-link a {
+  text-decoration: none; /* Uklanja podvlačenje */
+  color: #2b2529; /* Svetloroze boja */
+  font-weight: bold; /* Podebljan tekst */
+  font-size: 16px; /* Prilagođena veličina */
+  margin-top: 30%;
+  text-align: center;
+}
+
+.register-link a:hover {
+  color: #ff1493; /* Tamnija nijansa roze prilikom hover efekta */
+  /* text-decoration: underline; Dodaje podvlačenje na hover */
+}
+
 
 @media (max-width: 480px) {
   .login-container {
@@ -164,7 +178,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: #ffc1cc;
   padding: 20px;
 }
 
@@ -612,6 +626,7 @@ h3 {
   align-items: center;
   padding: 40px;
   text-align: center;
+  z-index: 5;
 }
 
 .inspiration-text {
@@ -624,6 +639,8 @@ h3 {
 }
 
 .start-button {
+  border: 2px solid red;
+  pointer-events: auto;
   background-color: #ff4081;  /* Snažna ružičasta */
   color: white;
   border: none;
@@ -633,6 +650,8 @@ h3 {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  /* Senka dugmeta za dublji efekat */
+  position: relative; /* Dodaj ovo da bude iznad pozadine */
+  z-index: 10;
 }
 
 .start-button:hover {
@@ -666,6 +685,7 @@ h3 {
     font-size: 1.2rem;
   }
 }
+
 /*Products.css i OneProduct.css - stilovi za proizvode*/
 .all-products {
   display: flex;
@@ -1082,7 +1102,7 @@ p {
   border-radius: 5px;
 }
 
-.search-button, .filter-button {
+/*.search-button, .filter-button {
   padding: 8px 12px;
   background-color: #83656f;
   color: white;
@@ -1093,7 +1113,7 @@ p {
 
 .search-button:hover, .filter-button:hover {
   background-color: #d1b6bf;
-}
+}*/
 
 .in-stock-label {
   margin-left: 10px;
@@ -1205,5 +1225,200 @@ p {
   font-size: 16px;
   color: #ccc;
   margin-bottom: 30px;
+}
+
+
+
+
+
+/*PRETRAGA RECEPATA*/
+.recipe-finder-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background-color: #ffc1cc;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fff;
+  color: #000; /* Crni tekst */
+}
+
+.input-group button {
+  padding: 10px 15px;
+  /*background: #ff69b4;  Roze dugme */
+  background: #515151;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.input-group button:hover {
+  /*background: #ff1493;  Tamnija roze boja */
+  background: #3b3b3b;
+  transform: scale(1.05);
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffe4ec; /* Svetlo roze pozadina */
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 8px;
+  color: #000;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #ff1493; /* Tamno roze X */
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.remove-btn:hover {
+  color: #ff69b4;
+}
+
+.find-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ff1493; /* Tamna roze */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.find-btn:hover {
+  background: #f3138a; /* Još tamnija roze */
+  transform: scale(1.05);
+}
+
+.find-recipes-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: #ffe4ec; /* Svetlo roze */
+  border-radius: 12px;
+}
+.find-recipes-container h2 {
+  color:#000;
+}
+.find-recipe-card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #ff1493; /* Roze akcenat sa leve strane */
+}
+
+.find-recipe-card h3 {
+  margin: 0;
+  color: #0000009e; /* Tamno roze naslovi */
+}
+
+.find-recipe-card p {
+  margin: 5px 0;
+  color: #333; /* Tamno siva za bolju čitljivost */
+}
+
+.find-recipe-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+.find-details-button {
+  display: inline-block;
+  background-color: #515151;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.find-details-button:hover {
+  background-color: #3b3b3b;;
+  color:white;
+}
+
+/* Osnovni stil za dropdown */
+.find-dropdown {
+  font-family: Arial, sans-serif;
+  margin: 20px 0;
+}
+
+/* Stil za labelu */
+.find-dropdown label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Stil za select element */
+.find-dropdown select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: #f8d7da; /* Roza pozadina */
+  color: #000; /* Crna boja teksta */
+  transition: all 0.3s ease;
+}
+
+/* Stil za hover efekat na select */
+.find-dropdown select:hover {
+  background-color: #f1c6d1; /* Tamniji roze ton */
+}
+
+/* Stil za placeholder (prvi option element) */
+.find-dropdown option:first-child {
+  color: #ffe4ec; /* Siva boja za placeholder */
+}
+
+/* Stil za option elemente */
+.find-dropdown option {
+  background-color: #ffe4ec; /* Roza pozadina */
+  color: #000; /* Crna boja teksta */
+}
+
+/* Stil za selektovani option */
+.find-dropdown select:focus {
+  border-color: #000000; /* Roza border pri fokusu */
+  outline: none;
 }
 

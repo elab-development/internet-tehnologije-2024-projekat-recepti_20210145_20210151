@@ -7,15 +7,6 @@ import { useNavigate } from 'react-router-dom';  // Import useNavigate
 const LoginPage = () => {
     const [userData, setUserData] = useState({email:"", password:""});
     const navigate = useNavigate();
-    
-    //ovo iz nekog razloga nije radilo. nismo sigurni sto ali mozemo da proverimo zasto da bi znali zasto
-    // function handleInput (e){
-    //     //console.log(e);
-    //     let newUserData = userData;
-    //     newUserData[e.target.name] = e.target.value;
-    //     //console.log(newUserData);
-    //     setUserData(newUserData);
-    // }
 
     const handleChange = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -39,7 +30,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
     <h1 className="login-title">Dobrodošli u našu prodavnicu</h1>
-    <p className="login-subtitle">Prijavite se kako biste istražili recepte i namirnice</p>
+    <p className="login-subtitle">Prijavite se kako biste istražili recepte i namirnice!</p>
     <form onSubmit={handleLogIn}>
         <div className="login-form">
         <input 
@@ -60,7 +51,7 @@ const LoginPage = () => {
         />
         <button type="submit" className="login-button">Prijavi se</button>
         <div className="register-link">
-        <a href="/register">Kreirajte nalog</a>
+        <a href="/register">Nemate nalog? Kreirajte ga.</a>
         </div>
         </div>
     </form>

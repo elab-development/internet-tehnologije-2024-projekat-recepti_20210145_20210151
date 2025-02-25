@@ -48,6 +48,7 @@ Route::middleware(['auth:sanctum', IsAdmin::class])->post('recepti', [ReceptCont
 //Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);
 Route::get('/recepti/pretraga', [ReceptController::class, 'pretraga']);
 Route::get('/recepti/{id}', [ReceptController::class, 'show']);
+Route::post('/recipes/find', [ReceptController::class, 'findRecipes']);
 
 //Korpa
 Route::middleware('auth:sanctum')->group(function () {
