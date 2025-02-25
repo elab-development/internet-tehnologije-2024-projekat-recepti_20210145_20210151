@@ -1422,3 +1422,53 @@ p {
   outline: none;
 }
 
+
+.back-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.back-button:hover {
+  background-color: #45a049;
+}
+
+
+/*RESETOVANJE LOZINKE*/
+/* ResetPassword.css */
+.reset-password-container {
+  max-width: 400px;
+  margin:50px auto 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.reset-password-container h2 {
+  text-align: center;
+}
+
+.reset-password-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.reset-password-container input {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.reset-password-container button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.reset-password-container button:hover {
+  background-color: #45a049;
+}
+

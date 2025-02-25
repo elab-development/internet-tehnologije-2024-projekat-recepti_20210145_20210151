@@ -26,7 +26,7 @@ class ResetPasswordController extends Controller
     }
 
     // Resetovanje lozinke
-    public function reset(Request $request)
+    /*public function reset(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',
@@ -46,5 +46,35 @@ class ResetPasswordController extends Controller
         return $response === Password::PASSWORD_RESET
             ? response()->json(['message' => 'Vaša lozinka je uspešno resetovana.'])
             : response()->json(['message' => 'Neuspešan pokušaj resetovanja lozinke.'], 500);
-    }
+    }*/
+    public function reset(Request $request)
+{
+    // Validacija
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+        'password' => 'required|string|confirmed|min:8',
+        'token' => 'required',
+    ]);
+
+    // Dodajte logove za dijagnostiku
+    \Log::info('Email: ' . $request->email);
+    \Log::info('Token: ' . $request->token);
+
+    $response = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($user) use ($request) {
+            $user->forceFill([
+                'password' => Hash::make($request->password),
+            ])->save();
+        }
+    );
+
+    // Dodajte logovanje za odgovor od Password::reset
+    \Log::info('Password Reset Response: ' . $response);
+
+    return $response === Password::PASSWORD_RESET
+        ? response()->json(['message' => 'Vaša lozinka je uspešno resetovana.'])
+        : response()->json(['message' => 'Neuspešan pokušaj resetovanja lozinke.'], 500);
+}
+
 }

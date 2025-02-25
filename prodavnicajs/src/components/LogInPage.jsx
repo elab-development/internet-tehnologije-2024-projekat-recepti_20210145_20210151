@@ -50,8 +50,8 @@ const LoginPage = () => {
             onChange = {handleChange}
         />
         <button type="submit" className="login-button">Prijavi se</button>
-        <div className="register-link">
-        <a href="/register">Nemate nalog? Kreirajte ga.</a>
+        <div className="register-link"> 
+            <a href="/register">Nemate nalog? Kreirajte ga.</a>
         </div>
         </div>
     </form>
