@@ -3,6 +3,7 @@ import { MdAddShoppingCart } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from '../context/CartContext';
+import React from 'react';
 
 
 const OneRecipe = () => {
@@ -36,6 +37,7 @@ const OneRecipe = () => {
     if (selectedProduct) {
       addToCart(selectedProduct); // Pozivamo funkciju za dodavanje u korpu
       setShowModal(false); // Zatvaramo modal
+      setSelectedProduct(null);
     }
   };
 
@@ -66,6 +68,8 @@ const OneRecipe = () => {
               <MdAddShoppingCart
                 className="add-to-cart-icon"
                 onClick={() => handleAddToCart(product)}
+                role="button"  // Dodajemo role button
+                aria-label="Dodaj u korpu"
               />
             </li>
           ))}

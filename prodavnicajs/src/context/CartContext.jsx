@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
         console.log("Korpa ažurirana:", cart);
     }, [cart]);
 
-    const fetchCart = async () => {
+    /*const fetchCart = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/korpa', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, }
@@ -35,14 +35,15 @@ export const CartProvider = ({ children }) => {
         } catch (error) {
             console.error('Greška pri učitavanju korpe:', error);
         }
-    };
+    };*/
 
-    const addToCart = async (product) => {
+    /*const addToCart = async (product) => {
         try {
             console.log("Proizvod koji se dodaje u korpu", product);
         
                 
             const token = localStorage.getItem('token');
+            console.log(token);
             if (!token) {
                 console.error("Nema tokena, korisnik nije ulogovan!");
                 alert("Morate biti prijavljeni da biste mogli uspešno obaviti kupovinu!");
@@ -89,7 +90,58 @@ export const CartProvider = ({ children }) => {
             console.error('Greška pri dodavanju proizvoda:', error);
             alert('Došlo je do greške pri dodavanju proizvoda u korpu.');
         }
-    };
+    };*/
+    const fetchCart = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/korpa', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            const data = await response.json();
+     
+            if (data.proizvodi) {
+                if (Array.isArray(data.proizvodi)) {
+                    setCart(data.proizvodi); // Postavljanje proizvoda u korpu
+                } else {
+                    setCart([]);
+                }
+            } else {
+                setCart([]);
+            }
+        } catch (error) {
+            console.error('Greška pri učitavanju korpe:', error);
+        }
+     };
+     
+    const addToCart = async (product) => {
+        try {
+            console.log("Proizvod koji se dodaje u korpu", product);
+            
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Morate biti prijavljeni da biste mogli uspešno obaviti kupovinu!");
+                return;
+            }
+            
+            const existingProduct = cart.find(item => item.pivot.proizvod_id === product.id);
+            
+            let quantity = 1;
+            if (existingProduct) {
+                quantity = existingProduct.pivot.kolicina_proizvoda + 1;
+                await updateQuantity(product.id, "increase");
+                alert("Količina proizvoda je povećana.");
+            } else {
+                // Dodavanje proizvoda direktno u state
+                setCart(prevCart => [
+                    ...prevCart,
+                    { ...product, pivot: { proizvod_id: product.id, kolicina_proizvoda: quantity } }
+                ]);
+                alert("Proizvod uspešno dodat u korpu!");
+            }
+        } catch (error) {
+            console.error("Greška pri dodavanju proizvoda:", error);
+        }
+     };
+     
 
     const updateQuantity = async (proizvod_id, action) => {
         try {

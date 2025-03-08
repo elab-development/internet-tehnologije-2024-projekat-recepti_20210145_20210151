@@ -22,7 +22,6 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
 
-//stavlja pravu sliku
 public function store(Request $request)
 {
     // Validacija podataka
@@ -55,7 +54,7 @@ public function store(Request $request)
         $proizvod->slika = asset('storage/proizvodi_image/default.jpg'); // Podrazumevana slika
     }
 
-        // Čuvanje ispravne putanje slike u bazi
+        // Cuvanje ispravne putanje slike u bazi
         $proizvod->save();
 
         return response()->json([
@@ -67,10 +66,10 @@ public function store(Request $request)
 
     public function getAllProducts(Request $request)
     {
-        // Parametar 'per_page' omogućava korisnicima da biraju broj proizvoda po stranici
+        // Parametar 'per_page' omogucava korisnicima da biraju broj proizvoda po stranici
         $perPage = $request->input('per_page', 10); // Ako nije prosleđen, koristi se podrazumevani broj proizvoda po stranici (10)
 
-        // Paginacija proizvoda sa željenim brojem proizvoda po stranici
+        // Paginacija proizvoda sa zeljenim brojem proizvoda po stranici
         $proizvodi = Proizvod::paginate($perPage);
 
         // Provera da li su proizvodi prazni
@@ -78,7 +77,7 @@ public function store(Request $request)
             return response()->json(['message' => 'Nema dostupnih proizvoda.'], 404);
         }
 
-        // Dodaj punu URL putanju slike za svaki proizvod
+        // Dodaje punu URL putanju slike za svaki proizvod
         foreach ($proizvodi as $proizvod) {
             if (!$proizvod->slika) {
                 // Ako proizvod nema sliku, poveži ga sa slikom na osnovu naziva proizvoda
@@ -86,10 +85,10 @@ public function store(Request $request)
             }
         }
 
-        // Vraćanje proizvoda zajedno sa informacijama o paginaciji
+        // Vracanje proizvoda zajedno sa informacijama o paginaciji
         return response()->json([
             'message' => 'Lista svih proizvoda.',
-            'data' => $proizvodi->items(),  // Vraća samo proizvode za trenutnu stranicu
+            'data' => $proizvodi->items(),  // Vraca samo proizvode za trenutnu stranicu
             'pagination' => [
                 'current_page' => $proizvodi->currentPage(),
                 'last_page' => $proizvodi->lastPage(),
@@ -98,7 +97,6 @@ public function store(Request $request)
             ]
         ]);
     }
-
 
     //Pretraga proizvoda
     public function search(Request $request)
@@ -155,10 +153,10 @@ public function store(Request $request)
             $proizvod->slika = asset('storage/proizvodi_image/' . $proizvod->naziv . '.jpeg');
         }
     }
-    // Vraćanje podataka o proizvodima i paginaciji
+    // Vracanje podataka o proizvodima i paginaciji
     return response()->json([
         'message' => 'Sistem je pronašao proizvode.',
-        'data' => $proizvodi->items(), // Vraćamo samo proizvode
+        'data' => $proizvodi->items(), 
         'pagination' => [
             'total' => $proizvodi->total(), // Ukupan broj proizvoda
             'current_page' => $proizvodi->currentPage(), // Trenutna stranica
@@ -169,8 +167,6 @@ public function store(Request $request)
         ]
     ]);
 }
-
-
     //Azuriranje proizvoda
     public function update(Request $request, $id)
     {
@@ -204,34 +200,31 @@ public function store(Request $request)
     }
     public function showProizvodRecept($id)
     {  
-        // Nađi proizvod sa id
+        // Trazi proizvod sa id
         $proizvod = Proizvod::findOrFail($id);
-        $proizvod->load('recepti'); // Učitaj povezane recepte
+        $proizvod->load('recepti'); // Ucitava povezane recepte
 
         if ($proizvod->recepti->isEmpty()) {
             return response()->json(['message' => 'Nema povezanih recepata za ovaj proizvod.'], 404);
         }
 
-        // Vratiti proizvod sa povezanim receptima kroz resurs
+        // Vraca proizvod sa povezanim receptima kroz resurs
         return new ProizvodResource($proizvod);
     }
-
     public function showProizvodKorpa($id)
     {
         $korpa = Korpa::findOrFail($id);
-        $korpa->load('proizvodi'); // Učitaj povezane proizvode
-        // Vratiti korpu sa svim povezanim proizvodima
+        $korpa->load('proizvodi'); // Ucitava povezane proizvode
+        // Vraca korpu sa svim povezanim proizvodima
         return new KorpaResource($korpa);
     }
     public function showProizvodKupovina($id)
     {
         $proizvod = Proizvod::findOrFail($id);
+    // Ucitava povezane kupovine kroz pivot tabelu 
+        $proizvod->load('kupovine');  
 
-    // Učitajte povezane kupovine kroz pivot tabelu (pretpostavljam da imate ovu vezu)
-        $proizvod->load('kupovine');  // Ovde pretpostavljamo da postoji 'kupovine' relacija u modelu Proizvod
-
-    // Vratiti proizvod sa svim povezanim kupovinama
+    // Vraca proizvod sa svim povezanim kupovinama
         return new ProizvodKupovinaResource($proizvod->kupovine);
-
     }
 }

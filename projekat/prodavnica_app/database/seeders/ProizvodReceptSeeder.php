@@ -18,7 +18,7 @@ class ProizvodReceptSeeder extends Seeder
         $recepti = Recept::factory()->count(5)->create();
         $proizvodi = Proizvod::factory()->count(5)->create();
 
-        // Kreirajte pivot podatke koristeći factory
+        // Kreiranje pivot podatke koristeci factory
         foreach ($recepti as $recept) {
             foreach ($proizvodi->random(rand(2, 5)) as $proizvod) {
                 ProizvodRecept::factory()->create([
@@ -29,3 +29,4 @@ class ProizvodReceptSeeder extends Seeder
         }
     }
 }
+

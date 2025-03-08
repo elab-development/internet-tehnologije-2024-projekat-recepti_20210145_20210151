@@ -12,7 +12,7 @@ const Purchase = () => {
     const total = location.state?.total; 
     console.log("Cena: ", total); // Preuzimanje ukupne cene iz prethodne stranice
 
-    const [paymentMethod, setPaymentMethod] = useState('cash'); // Početno je pouzećem
+    const [paymentMethod, setPaymentMethod] = useState('cash'); // Pocetno je pouzecem
     const [cardNumber, setCardNumber] = useState('');
     const [deliveryAddress, setDeliveryAddress] = useState('');
     const [error, setError] = useState('');
@@ -20,7 +20,6 @@ const Purchase = () => {
     const handlePaymentChange = (e) => {
         setPaymentMethod(e.target.value);
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -28,14 +27,12 @@ const Purchase = () => {
             setError('Adresa dostave je obavezna!');
             return;
         }
-
         const data = {
             ukupna_cena: total,
             nacin_placanja: paymentMethod,
             adresa_dostave: deliveryAddress,
-            ...(paymentMethod === 'card' && { broj_kartice: cardNumber }) // Ako je plaćanje karticom, dodaj broj kartice
+            ...(paymentMethod === 'card' && { broj_kartice: cardNumber }) // Ako je placanje karticom, dodaj broj kartice
         };
-
         console.log("Ukupna cena: ", data.ukupna_cena);
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/kupovina/store', data, {
@@ -43,21 +40,13 @@ const Purchase = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-            
             console.log('Uspesna kupovina', response.data);
             alert("Uspesna kupovina!");
 
             console.log('Data:', data);
             clearCart();
-
-            /*const response_delete = await axios.post('http://127.0.0.1:8000/api/korpa/clear', {}, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                }
-            });*/
             navigate("/");
-            // Usmeravanje na stranicu sa potvrdom, ili nečim sličnim
+            // Usmeravanje na stranicu sa potvrdom
         } catch (err) {
             console.error('Došlo je do greške', err);
             setError('Došlo je do greške, pokušajte ponovo.');

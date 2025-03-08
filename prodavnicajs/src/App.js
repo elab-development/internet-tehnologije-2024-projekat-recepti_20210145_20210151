@@ -1,18 +1,18 @@
 import './App.css';
-import RegisterPage from './components/RegisterPage';
-import LogInPage from './components/LogInPage';
-import NavBar from './components/NavBar';
-import Homepage from './components/Homepage';
-import Products from './components/Products';
-import SearchProducts from './components/SearchProducts';
-import Cart from './components/Cart';
-import { CartProvider } from './context/CartContext';
-import Purchase from './components/Purchase';
-import Recipes from "./components/Recipes";
-import OneRecipe from "./components/OneRecipe";
-import RecipeFinder from './components/RecipeFinder';
+import RegisterPage from './components/RegisterPage.jsx';
+import LogInPage from './components/LogInPage.jsx';
+import NavBar from './components/NavBar.jsx';
+import Homepage from './components/Homepage.jsx';
+import Products from './components/Products.jsx';
+import SearchProducts from './components/SearchProducts.jsx';
+import Cart from './components/Cart.jsx';
+import { CartProvider } from './context/CartContext.jsx';
+import Purchase from './components/Purchase.jsx';
+import Recipes from "./components/Recipes.jsx";
+import OneRecipe from "./components/OneRecipe.jsx";
+import RecipeFinder from './components/RecipeFinder.jsx';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import SearchRecipes from './components/SearchRecipes';
+import SearchRecipes from './components/SearchRecipes.jsx';
 
 function App() {
 
@@ -32,10 +32,7 @@ function App() {
         <Route path="/recepti/:id" element={<OneRecipe />} />
         <Route path="/recepti/pretraga" element={<SearchRecipes />} />
         <Route path="/recipe-finder" element={<RecipeFinder />} />
-
-
        </Routes>
-
       </BrowserRouter>
     </CartProvider>
   );

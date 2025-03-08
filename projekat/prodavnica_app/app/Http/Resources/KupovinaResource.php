@@ -18,13 +18,12 @@ class KupovinaResource extends JsonResource
         return [
             'id_kupovine' => $this->id_kupovine,
             'id_user' => $this->id_user,
-            //'user' => new UserResource($this->whenLoaded('user')), // Ako je 'user' relacija učitana
             'ukupna_cena' => $this->ukupna_cena,
             'nacin_placanja' => $this->nacin_placanja,
             'adresa_dostave' => $this->adresa_dostave,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'proizvodi' => ProizvodKupovinaResource::collection($this->proizvodi), // Pretpostavljam da postoji relacija sa proizvodima
+            'proizvodi' => ProizvodKupovinaResource::collection($this->proizvodi), 
         ];
     }
 }

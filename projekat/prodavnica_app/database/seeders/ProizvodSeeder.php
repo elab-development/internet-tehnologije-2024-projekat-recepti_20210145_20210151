@@ -35,11 +35,10 @@ class ProizvodSeeder extends Seeder
                 'tip' => 'organski',
             ],
         ];
-
         foreach ($proizvodi as $proizvod) {
             Proizvod::create($proizvod);
         }
-        Proizvod::factory()->count(5)->create();
-        */
+        Proizvod::factory()->count(5)->create();*/
+        
     }
 }

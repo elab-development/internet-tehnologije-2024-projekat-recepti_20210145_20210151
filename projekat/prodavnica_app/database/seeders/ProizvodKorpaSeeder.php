@@ -15,11 +15,10 @@ class ProizvodKorpaSeeder extends Seeder
      */
     public function run(): void
     {
-        // Kreirajte nekoliko korpi i proizvoda
+
         $korpe = Korpa::factory()->count(5)->create();
         $proizvodi = Proizvod::factory()->count(20)->create();
 
-        // Popunite pivot tabelu koristeći factory
         foreach ($korpe as $korpa) {
             foreach ($proizvodi->random(rand(3, 7)) as $proizvod) {
                 ProizvodKorpa::factory()->create([

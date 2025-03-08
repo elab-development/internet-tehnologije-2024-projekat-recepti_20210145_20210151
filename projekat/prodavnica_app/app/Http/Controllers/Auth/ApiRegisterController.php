@@ -22,7 +22,6 @@ class ApiRegisterController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
         // Kreiranje korisnika
         $user = User::create([
             'name' => $request->name,
@@ -30,8 +29,7 @@ class ApiRegisterController extends Controller
             'password' => Hash::make($request->password),
             'uloga' => 'korisnik',
         ]);
-
-        // Vraćanje odgovora sa podacima korisnika
+        // Vracanje odgovora sa podacima korisnika
         return response()->json([
             'message' => 'Uspešno ste registrovani!',
             'user' => $user

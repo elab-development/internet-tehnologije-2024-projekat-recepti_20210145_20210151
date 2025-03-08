@@ -39,7 +39,7 @@ class ReceptSeeder extends Seeder
             Recept::create($recept);
         }
 
-        Recept::factory()->count(50)->create();
-        */
+        Recept::factory()->count(50)->create();*/
+        
     }
 }

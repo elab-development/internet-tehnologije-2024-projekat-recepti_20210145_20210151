@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+
 
 const RegisterPage = () => {
     const [userData, setUserData] = useState({name:"", email:"", password:"", password_confirmation:""});
     const navigate = useNavigate();
     function handleInput (e){
-        //console.log(e);
         console.log(userData);
         let newUserData = userData;
         newUserData[e.target.name] = e.target.value;
-        //console.log(newUserData);
         setUserData(newUserData);
     }
 
@@ -20,7 +19,6 @@ const RegisterPage = () => {
             alert("Lozinke se ne poklapaju!");
             return;
           }
-        //axios.defaults.withCredentials = true;
         axios
         .post("http://127.0.0.1:8000/api/register", userData)
         .then((res) => {

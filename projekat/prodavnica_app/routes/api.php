@@ -18,10 +18,9 @@ Route::get('/user', function (Request $request) {
 
 //Registracija i prijava
 Route::post('/register', [ApiRegisterController::class, 'register']);
-//Route::post('/login', [LogInController::class, 'login']);
 Route::post('/login', [LogInController::class, 'login'])->name('login');
 Route::post('/logout', [LogInController::class, 'logout'])->middleware('auth:sanctum');
-//Resetovanhje lozinke
+
 
 // Dodavanje rute za resetovanje lozinke
 Route::get('/reset-password/{token}', function ($token) {
@@ -45,9 +44,10 @@ Route::get('proizvod/{id}/kupovina', [ProductController::class, 'showProizvodKup
 
 //Recept
 Route::middleware(['auth:sanctum', IsAdmin::class])->post('recepti', [ReceptController::class, 'store']);
-//Route::middleware(['auth:sanctum', IsAdmin::class])->patch('/recepti/{id}', [ReceptController::class, 'update']);
 Route::get('/recepti/pretraga', [ReceptController::class, 'pretraga']);
+
 Route::get('/recepti/{id}', [ReceptController::class, 'show']);
+
 Route::post('/recipes/find', [ReceptController::class, 'findRecipes']);
 
 //Korpa

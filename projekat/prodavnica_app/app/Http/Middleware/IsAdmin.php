@@ -21,7 +21,7 @@ class IsAdmin
             return $next($request);
         }
 
-        //Ako nije administrator, vraća gresku
+        //Ako nije administrator, vraca gresku
         return response()->json(['message' => 'Nemate dozvolu za ovu akciju.'], 403);
     }
 }

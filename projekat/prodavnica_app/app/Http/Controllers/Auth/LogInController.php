@@ -11,35 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class LogInController extends Controller
 {
-    /*public function login(Request $request)
-    {
-        // Validacija unetih podataka
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
-
-        // Pronađi korisnika po emailu
-        $user = User::where('email', $validatedData['email'])->first();
-
-        // Provera validnosti unetih podataka
-        if ($user && Hash::check($validatedData['password'], $user->password)) {
-            // Generišemo API token za korisnika (ako koristimo Passport ili Sanctum)
-            $token = $user->createToken('AppToken')->plainTextToken;
-
-            // Uspešna prijava, vraćamo token i poruku o uspehu
-            return response()->json([
-                'message' => 'Uspešno ste prijavljeni!',
-                'token' => $token
-            ]);
-        } else {
-            // Ako podaci nisu ispravni
-            return response()->json([
-                'message' => 'Pogrešni email ili lozinka.',
-            ], 401);
-        }
-    }*/
-
     public function login(Request $request){
         $validator = Validator::make($request->all(),[
             'email' => 'required|email',
@@ -50,14 +21,14 @@ class LogInController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        // Proverite da li korisnik postoji i da li je lozinka ispravna
+        // Proverava da li korisnik postoji i da li je lozinka ispravna
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Neispravan email ili lozinka.'], 401);
         }
 
-        // Generišemo token
+        // Generise token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -78,7 +49,7 @@ class LogInController extends Controller
                 $token->delete();
             });
 
-            // Uspešno odjavljivanje
+            // Uspesno odjavljivanje
             return response()->json([
                 'message' => 'Uspešno ste se odjavili.'
             ]);

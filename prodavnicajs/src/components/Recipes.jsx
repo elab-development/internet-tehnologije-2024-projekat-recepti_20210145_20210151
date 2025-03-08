@@ -23,8 +23,7 @@ const Recipes = () => {
         console.error("Greška pri učitavanju recepata:", error);
         setRecipes([]);
       });
-  }, []); // Ovdje bi trebalo da se postavi samo prilikom prvog učitavanja
-
+  }, []); 
   // Funkcija za promenu stranice
   const handlePageChange = (page) => {
     if (page < 1 || page > pagination?.last_page) return;

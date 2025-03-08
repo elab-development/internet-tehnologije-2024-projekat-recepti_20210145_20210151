@@ -19,7 +19,7 @@ class ProizvodKupovinaSeeder extends Seeder
         $proizvodi = Proizvod::factory()->count(20)->create();
         $kupovine = Kupovina::factory()->count(10)->create();
 
-        // Popunjavanje pivot tabele koristeći factory
+        // Popunjavanje pivot tabele koristeci factory
         foreach ($kupovine as $kupovina) {
             foreach ($proizvodi->random(rand(2, 5)) as $proizvod) {
                 ProizvodKupovina::factory()->create([

@@ -56,23 +56,23 @@ class KorpaController extends Controller
         $korpa = auth()->user()->korpa;
     
         if ($korpa) {
-            // Pronađi proizvod u pivot tabeli
+            // Trazi proizvod u pivot tabeli
             $proizvod = $korpa->proizvodi()->where('proizvod_id', $validated['proizvod_id'])->first();
     
             if ($proizvod) {
-                // Izračunaj novu cenu nakon uklanjanja proizvoda
+                // Racuna novu cenu nakon uklanjanja proizvoda
                 $novaCena = $korpa->ukupna_cena - ($proizvod->pivot->kolicina_proizvoda * $proizvod->cena);
     
-                // Ažuriraj ukupnu cenu korpe
+                // Azurira ukupnu cenu korpe
                 $korpa->update(['ukupna_cena' => max($novaCena, 0)]);
     
-                // Ukloni proizvod iz pivot tabele
+                // Uklanja proizvod iz pivot tabele
                 $korpa->proizvodi()->detach($validated['proizvod_id']);
                 return response()->json(['message' => 'Proizvod uspešno uklonjen']);
             }
         }
     
-        // Proveri da li je korpa sada prazna i ukloni je ako jeste
+        // Proverava da li je korpa sada prazna i uklanja ako jeste
         if ($korpa && $korpa->proizvodi()->count() === 0) {
             $korpa->delete();
         }
@@ -87,10 +87,9 @@ class KorpaController extends Controller
             return response()->json(['message' => 'Korpa je prazna.']);
         }
         $korpa->load(['proizvodi' => function ($query) {
-            $query->withPivot('kolicina_proizvoda'); // Učitaj količinu proizvoda iz pivot tabele
+            $query->withPivot('kolicina_proizvoda'); // Ucitaj kolicinu proizvoda iz pivot tabele
         }]);
         return response()->json($korpa);
-        //return response()->json($korpa->load('proizvodi'));
     }
     
     //Azuriranje kolicine proizvoda u korpi
@@ -98,12 +97,11 @@ class KorpaController extends Controller
     {
         $request->validate([
             'proizvod_id' => 'required|exists:proizvods,id',
-            'kolicina' => 'required|integer|min:0',  // omogućeno postavljanje količine na 0
-            'korpa_id' => 'required|exists:korpas,id', // Dodaj validaciju za korpa_id
+            'kolicina' => 'required|integer|min:0',  // Omoguceno postavljanje kolicine na 0
+            'korpa_id' => 'required|exists:korpas,id', 
         ]);
 
         $korpa = Korpa::find($request->korpa_id);
-        //$korpa = Korpa::where('user_id', auth()->id())->first();
 
         if (!$korpa) {
             return response()->json(['message' => 'Korpa ne postoji.'], 404);
@@ -117,7 +115,7 @@ class KorpaController extends Controller
             return response()->json(['message' => 'Proizvod nije u korpi.'], 404);
         }
 
-        // Ako je količina 0, uklanjamo proizvod iz korpe
+        // Ako je kolicina 0, uklanjamo proizvod iz korpe
         if ($request->kolicina == 0) {
             $proizvodKorpa->delete();
             $this->updateTotalPrice($korpa);
@@ -129,11 +127,10 @@ class KorpaController extends Controller
         ]);
 
         $this->updateTotalPrice($korpa);
-        // Vrati ažuriranu korpu i proizvod
+        // Vrati azuriranu korpu i proizvod
         $korpa = Korpa::with('proizvodi')->find($korpa->id);
 
-        // Vrati ažuriranu korpu i proizvod
-        //$korpa = Korpa::where('user_id', auth()->id())->first();
+
         return response()->json([
             'message' => 'Količina proizvoda uspešno ažurirana.',
             'proizvod' => $proizvodKorpa,
@@ -144,12 +141,12 @@ class KorpaController extends Controller
     {
         $totalPrice = 0;
 
-        // Računanje ukupne cene na osnovu proizvoda i njihove količine
+        // Racunanje ukupne cene na osnovu proizvoda i njihove količine
         foreach ($korpa->proizvodi as $product) {
             $totalPrice += $product->pivot->kolicina_proizvoda * $product->cena;
         }
 
-        // Ažuriraj ukupnu cenu u bazi
+        // Azuriraj ukupnu cenu u bazi
         $korpa->update(['ukupna_cena' => $totalPrice]);
     }
 
@@ -158,15 +155,12 @@ class KorpaController extends Controller
         $korpa = Korpa::where('user_id', auth()->id())->latest()->first(); // Pronalazi najnoviju korpu korisnika
 
         if ($korpa) {
-            $korpa->delete(); // Briše korpu iz baze
+            $korpa->delete(); // Brise korpu iz baze
         }
 
         return response()->json([
             'message' => 'Kupovina uspešno završena. Vaša korpa je sada prazna.'
         ]);
     }
-
-
-
 
 }

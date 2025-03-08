@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"; // Za uzimanje parametara iz URL-a
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const SearchRecipes = () => {
@@ -12,21 +12,17 @@ const SearchRecipes = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const tipJela = queryParams.get("tip_jela");
-
     console.log("Tip jela:", tipJela);
-
-    // URL za pretragu sa parametrima, uključujući trenutnu stranicu
+    // URL za pretragu sa parametrima, ukljucujuci trenutnu stranicu
     const url = `http://localhost:8000/api/recepti/pretraga?tip_jela=${tipJela}&page=${currentPage}`;
     console.log("Poslati URL:", url);
-
-    setLoading(true); // Početak učitavanja
-
+    setLoading(true); 
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log("Dobijeni podaci:", data);
 
-        // Ako su podaci u formatu koji se očekuje
+        // Ako su podaci u formatu koji se ocekuje
         if (Array.isArray(data.recepti)) {
           setRecipes(data.recepti);
           setPagination(data.pagination || {}); // Spremi paginaciju, ako postoji
@@ -40,7 +36,7 @@ const SearchRecipes = () => {
         setRecipes([]);
       })
       .finally(() => {
-        setLoading(false); // Završeno učitavanje
+        setLoading(false); // Zavrseno ucitavanje
       });
   }, [location, currentPage]); // useEffect zavisi od location i currentPage
 

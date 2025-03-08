@@ -19,7 +19,7 @@ class ProizvodKorpaResource extends JsonResource
             'proizvod_id' => $this->pivot->proizvod_id,  // ID proizvoda
             'naziv_proizvoda' => $this->naziv,  // Naziv proizvoda iz povezane tabele Proizvod
             'cena_proizvoda' => $this->cena,  // Cena proizvoda
-            'kolicina_proizvoda' => $this->pivot->kolicina_proizvoda,  // Količina proizvoda u korpi
+            'kolicina_proizvoda' => $this->pivot->kolicina_proizvoda,  // Kolicina proizvoda u korpi
         ];
     }
 }

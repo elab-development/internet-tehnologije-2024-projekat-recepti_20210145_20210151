@@ -44,7 +44,7 @@ class ReceptController extends Controller
         $recept->slika = asset('storage/recepti_image/default.jpg'); // Podrazumevana slika
     }
 
-    // Čuvanje ispravne putanje slike u bazi
+    // Cuvanje ispravne putanje slike u bazi
     $recept->save();
 
     // Dodavanje proizvoda u recept putem pivot tabele 'proizvod_recept'
@@ -76,7 +76,7 @@ class ReceptController extends Controller
             'proizvodi' => 'nullable|array',
         ]);
 
-        // Ažuriranje recepta sa novim podacima
+        // Azuriranje recepta sa novim podacima
         $recept->update($validatedData);
 
         //Azuriranje tabele proizvod
@@ -109,18 +109,17 @@ class ReceptController extends Controller
         $query->where('tip_jela', $request->input('tip_jela'));
     }
 
-    // Paginacija – uzimanje parametra 'per_page' iz zahteva (podrazumevano 10)
+    // Paginacija – uzimanje parametra 'per_page' iz zahteva (podrazumevano 9)
     $perPage = $request->input('per_page', 9);
     $recepti = $query->paginate($perPage);
 
-    // Ako nema rezultata, vratiti poruku o grešci
+    // Ako nema rezultata, vratiti poruku o gresci
     if ($recepti->isEmpty()) {
         return response()->json([
             'message' => 'Nema rezultata za odabrani filter.',
         ], 404);
     }
-
-    // Vraćanje rezultata pretrage sa paginacijom
+    // Vraca rezultata pretrage sa paginacijom
     return response()->json([
         'recepti' => $recepti->items(),
         'pagination' => [
@@ -131,12 +130,10 @@ class ReceptController extends Controller
         ],
     ]);
 }
-
 //Ucitavanje pojedinacnih recepata
 public function show($id)
 {
     $recept = Recept::with('proizvodi')->findOrFail($id);
-    //dd($recept->toArray());
 
     if (!$recept) {
         return response()->json(['message' => 'Recept nije pronađen'], 404);
@@ -145,34 +142,6 @@ public function show($id)
     return response()->json($recept);
 }
 
-/*public function findRecipes(Request $request)
-{
-    $ingredients = $request->input('ingredients');
-
-    if (empty($ingredients)) {
-        return response()->json([], 200);
-    }
-
-    // Dohvati recepte koji sadrže bar jedan od unetih sastojaka
-    $recipes = Recept::with('proizvodi')
-        ->whereHas('proizvodi', function ($query) use ($ingredients) {
-            $query->whereIn('naziv', $ingredients);
-        })
-        ->get();
-
-    // Računanje poklapanja sastojaka
-    $recipes = $recipes->map(function ($recipe) use ($ingredients) {
-        $recipe->matchCount = $recipe->proizvodi
-            ->whereIn('naziv', $ingredients)
-            ->count();
-        return $recipe;
-    });
-
-    // Sortiranje recepata po broju poklapanja (opadajuće)
-    $sortedRecipes = $recipes->sortByDesc('matchCount')->values();
-
-    return response()->json($sortedRecipes);
-}*/
 public function findRecipes(Request $request)
 {
     $ingredients = $request->input('ingredients');
@@ -181,7 +150,6 @@ public function findRecipes(Request $request)
     if (empty($ingredients) && empty($tip_jela)) {
         return response()->json([], 200);
     }
-
     // Kreiraj upit za pretragu
     $query = Recept::with('proizvodi');
 
@@ -191,33 +159,22 @@ public function findRecipes(Request $request)
             $query->whereIn('naziv', $ingredients);
         });
     }
-
     // Filtriraj po tipu jela, ako je parametar prisutan
     if (!empty($tip_jela)) {
         $query->where('tip_jela', $tip_jela);
     }
-
     // Dohvati recepte
     $recipes = $query->get();
-
-    // Računanje broja poklapanja sastojaka
+    // Racunanje broja poklapanja sastojaka
     $recipes = $recipes->map(function ($recipe) use ($ingredients) {
         $recipe->matchCount = $recipe->proizvodi
             ->whereIn('naziv', $ingredients)
             ->count();
         return $recipe;
     });
-
-    // Sortiranje recepata po broju poklapanja (opadajuće)
+    // Sortiranje recepata po broju poklapanja (opadajuce)
     $sortedRecipes = $recipes->sortByDesc('matchCount')->values();
 
     return response()->json($sortedRecipes);
 }
-
-
-
-    
-
-
-
 }

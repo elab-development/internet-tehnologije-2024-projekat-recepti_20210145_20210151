@@ -10,24 +10,22 @@ const Products = () => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [inStock, setInStock] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');  // Dodajemo stanje za poruku o grešci
+    const [errorMessage, setErrorMessage] = useState('');  // Dodajemo stanje za poruku o gresci
 
-    // Funkcija za fetch proizvoda sa odgovarajuće stranice
+    // Funkcija za fetch proizvoda sa odgovarajuce stranice
     const fetchProducts = useCallback(async (page = 1) => {
         try {
             const response = await fetch(`http://localhost:8000/api/proizvodi/pretraga?keyword=${keyword}&tip=${type}&cena_min=${minPrice}&cena_max=${maxPrice}&dostupna_kolicina=${inStock ? 1 : 0}&page=${page}`);
-            
             if (response.status === 404) {
                 // Ako je status 404, postavljamo poruku
                 setErrorMessage("Nema proizvoda koji zadovoljavaju vaše kriterijume.");
-                setProducts([]);  // Očistimo proizvode, jer ih nema
+                setProducts([]);  
             } else {
                 const data = await response.json();
-
                 if (data.data) {
                     setProducts(data.data);
                     setPagination(data.pagination);
-                    setErrorMessage(''); // Ako ima proizvoda, brišemo poruku o grešci
+                    setErrorMessage(''); // Ako ima proizvoda, brisemo poruku o gresci
                 } else {
                     setErrorMessage("Nema proizvoda koji zadovoljavaju vaše kriterijume.");
                 }
@@ -37,29 +35,15 @@ const Products = () => {
             setErrorMessage("Došlo je do greške prilikom pretrage.");
         }
     }, [keyword, type, minPrice, maxPrice, inStock]);
-
     // useEffect za inicijalni fetch proizvoda
     useEffect(() => {
         fetchProducts(currentPage); // Pozivamo fetch sa trenutnom stranicom
-        //setCurrentPage(1);
     }, [currentPage, fetchProducts]);
-
-    /*const handleSearch = () => {
-        setCurrentPage(1); // Resetuj na prvu stranicu kada se pretražuje
-        fetchProducts(1);
-    };*/
-
-    /*const handleFilter = () => {
-        setCurrentPage(1); // Resetuj na prvu stranicu kada se koristi filter
-        fetchProducts(1);
-    };*/
-
     const handlePrevPage = () => {
         if (pagination.current_page > 1) {
             setCurrentPage(pagination.current_page - 1);
         }
     };
-
     const handleNextPage = () => {
         if (pagination.current_page < pagination.last_page) {
             setCurrentPage(pagination.current_page + 1);
@@ -77,7 +61,6 @@ const Products = () => {
                     onChange={(e) => setKeyword(e.target.value)} 
                     className="search-input"
                 />
-                {/*<button onClick={handleSearch} className="search-button">Pretraži</button>*/}
             </div>
 
             {/* Filtriranje */}
@@ -114,13 +97,12 @@ const Products = () => {
                         className="in-stock-checkbox"
                     />
                 </label>
-               {/* <button onClick={handleFilter} className="filter-button">Primeni filtere</button>*/}
             </div>
 
             {/* Prikaz proizvoda */}
             <div className="all-products">
                 {errorMessage ? (
-                    <p>{errorMessage}</p>  // Prikazujemo poruku o grešci ako postoji
+                    <p>{errorMessage}</p>  // Prikazujemo poruku o gresci ako postoji
                 ) : (
                     products.length > 0 ? (
                         products.map(product => (

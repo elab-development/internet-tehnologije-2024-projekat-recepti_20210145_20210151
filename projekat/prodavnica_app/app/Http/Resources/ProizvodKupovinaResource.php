@@ -20,9 +20,9 @@ class ProizvodKupovinaResource extends JsonResource
                 'proizvod_id' => $item->pivot->proizvod_id, // ID proizvoda iz pivot tabele
                 'naziv_proizvoda' => $item->naziv, // Naziv proizvoda
                 'ukupna_cena' => $item->ukupna_cena, // Ukupna cena kupovine
-                'kolicina' => $item->pivot->kolicina, // Količina proizvoda iz pivot tabele
+                'kolicina' => $item->pivot->kolicina, // Kolicina proizvoda iz pivot tabele
             ];
-        })->toArray(); // Mapiramo kolekciju i pretvaramo je u <niz></niz>
+        })->toArray(); 
 
     }
 }

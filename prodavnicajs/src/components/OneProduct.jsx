@@ -16,15 +16,11 @@ function OneProduct({ product }) {
 
     return (
         <div className="card">
-            {/*<img className="card-img" src={`http://localhost:8000/storage/proizvodi_image/${product.slika}`} alt={product.naziv} />*/}
             <img className="card-img" src={product.slika} alt={product.naziv} />
-
-
             <div className="card-body">
                 <h3 className="card-title">{product.naziv}</h3>
                 <p className="card-text">{product.kategorija}</p>
                 <p className="card-text">{product.tip}</p>
-                {/*<p className="card-text">{product.dostupna_kolicina}</p>*/}
                 <p className="card-price">{product.cena} RSD</p>
             </div>
             <button className="btn" onClick={() => handleAddToCart(product)}>Dodaj u korpu</button>

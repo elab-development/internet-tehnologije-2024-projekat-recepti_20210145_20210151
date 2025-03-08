@@ -21,7 +21,7 @@ class ProizvodResource extends JsonResource
             'cena' => $this->cena,
             'dostupna_kolicina' => $this->dostupna_kolicina,
             'tip' => $this->tip,
-            'recepti' => ProizvodReceptResource::collection($this->recepti), // Vraćanje povezanih recepata
+            'recepti' => ProizvodReceptResource::collection($this->recepti), // Vracanje povezanih recepata
             'kupovine' => ProizvodKupovinaResource::collection($this->kupovine),
 
         ];

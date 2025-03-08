@@ -14,13 +14,13 @@ const SearchProducts = () => {
     const [inStock, setInStock] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    // Funkcija za fetch proizvoda sa odgovarajuće stranice
+    // Funkcija za fetch proizvoda sa odgovarajuce stranice
     const fetchProducts = useCallback(async (page = 1) => {
         try {
             const queryParams = new URLSearchParams(location.search);
-            const category = queryParams.get('kategorija');  // Pretražujemo proizvode po kategoriji iz URL-a
+            const category = queryParams.get('kategorija');  // Pretrazujemo proizvode po kategoriji iz URL-a
 
-            // Slanje zahtev sa svim parametrima (kategorija + filtriranje)
+            // Slanje zahteva sa svim parametrima (kategorija + filtriranje)
             const url = `http://localhost:8000/api/proizvodi/pretraga?kategorija=${category}&keyword=${keyword}&tip=${type}&cena_min=${minPrice}&cena_max=${maxPrice}&dostupna_kolicina=${inStock ? 1 : 0}&page=${page}`;
             const response = await fetch(url);
 
@@ -42,28 +42,15 @@ const SearchProducts = () => {
             setErrorMessage("Došlo je do greške prilikom pretrage.");
         }
     }, [keyword, type, minPrice, maxPrice, inStock, location.search]);
-
     // useEffect za inicijalni fetch proizvoda
     useEffect(() => {
         fetchProducts(currentPage);
     }, [currentPage, fetchProducts]);
-
-    const handleSearch = () => {
-        setCurrentPage(1);
-        fetchProducts(1);  // Ponovno pozivanje pretrage sa novim ključem za pretragu
-    };
-
-    const handleFilter = () => {
-        setCurrentPage(1);
-        fetchProducts(1);  // Ponovno pozivanje sa filtrima
-    };
-
     const handlePrevPage = () => {
         if (pagination.current_page > 1) {
             setCurrentPage(pagination.current_page - 1);
         }
     };
-
     const handleNextPage = () => {
         if (pagination.current_page < pagination.last_page) {
             setCurrentPage(pagination.current_page + 1);
@@ -81,7 +68,6 @@ const SearchProducts = () => {
                     onChange={(e) => setKeyword(e.target.value)} 
                     className="search-input"
                 />
-                <button onClick={handleSearch} className="search-button">Pretraži</button>
             </div>
 
             {/* Filtriranje */}
@@ -118,7 +104,6 @@ const SearchProducts = () => {
                         className="in-stock-checkbox"
                     />
                 </label>
-                <button onClick={handleFilter} className="filter-button">Primeni filtere</button>
             </div>
 
             {/* Prikaz proizvoda */}
