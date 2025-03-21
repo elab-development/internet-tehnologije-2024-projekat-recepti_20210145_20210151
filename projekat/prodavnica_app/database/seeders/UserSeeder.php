@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Marko Markovic',
                 'email' => 'marko1@example.com',
-                'password' => Hash::make('lozinka123'), // Ne zaboravite da hasirate lozinku
+                'password' => Hash::make('lozinka123'), 
                 'uloga' => 'gost',
             ],
             [

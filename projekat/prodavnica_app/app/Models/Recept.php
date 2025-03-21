@@ -26,8 +26,4 @@ class Recept extends Model
                 ->withPivot('kolicina', 'merna_jedinica')// Povlačenje količine iz pivot tabele
                 ->withTimestamps();  
     }
-    /*public function proizvodRecept()
-    {
-        return $this->hasMany(ProizvodRecept::class, 'recept_id');
-    }*/
 }

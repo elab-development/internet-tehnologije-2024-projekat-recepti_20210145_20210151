@@ -87,15 +87,12 @@ describe('OneRecipe Component', () => {
         </CartProvider>
       );
     }
-
     function CartConsumerWrapper({ addToCart, children }) {
       const cart = useCart();
       cart.addToCart = addToCart;
       return children;
     }
-
     renderComponent(MockCartProvider);
-
     await waitFor(() => {
       expect(screen.getByText('spageti')).toBeInTheDocument();
     });

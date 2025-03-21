@@ -13,39 +13,45 @@ use Illuminate\Support\Facades\Auth;
 class KorpaController extends Controller
 {
     public function addProduct(Request $request)
-    {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Morate biti prijavljeni da biste koristili korpu.'], 401);
-        }
-    
-        $validated = $request->validate([
-            'proizvod_id' => 'required|exists:proizvods,id',
-            'kolicina' => 'required|integer|min:1',
-        ]);
-    
-        $korpa = auth()->user()->korpa;
-        if (!$korpa) {
-            $korpa = Korpa::create(['user_id' => auth()->id()]);
-        }
-    
-        $proizvod = Proizvod::find($validated['proizvod_id']);
-        
-        // Proveravamo dostupnu količinu proizvoda
-        if ($proizvod->dostupna_kolicina < $validated['kolicina']) {
-            return response()->json(['message' => 'Proizvoda nema na stanju.'], 400);
-        }
-    
-        // Dodavanje u pivot tabelu
-        $korpa->proizvodi()->syncWithoutDetaching([
-            $proizvod->id => ['kolicina_proizvoda' => $validated['kolicina']],
-        ]);
-    
-        $ukupnaCena = $korpa->ukupna_cena + ($proizvod->cena * $validated['kolicina']);
-        $korpa->update(['ukupna_cena' => $ukupnaCena]);
-    
-        return response()->json(['message' => 'Proizvod dodat u korpu.']);
+{
+    if (!auth()->check()) {
+        return response()->json(['message' => 'Morate biti prijavljeni da biste koristili korpu.'], 401);
     }
-    
+
+    $validated = $request->validate([
+        'proizvod_id' => 'required|exists:proizvods,id',
+        'kolicina' => 'required|integer|min:1',
+    ]);
+
+    // Dohvatanje korpe korisnika
+    $korpa = auth()->user()->korpa;
+    if (!$korpa) {
+        // Ako korisnik nema korpu, kreiraj novu
+        $korpa = Korpa::create(['user_id' => auth()->id()]);
+    }
+
+    $proizvod = Proizvod::find($validated['proizvod_id']);
+
+    // Proveravamo dostupnu količinu proizvoda
+    if ($proizvod->dostupna_kolicina < $validated['kolicina']) {
+        return response()->json(['message' => 'Proizvoda nema na stanju.'], 400);
+    }
+
+    // Dodavanje u pivot tabelu
+    $korpa->proizvodi()->syncWithoutDetaching([
+        $proizvod->id => ['kolicina_proizvoda' => $validated['kolicina']],
+    ]);
+
+    $ukupnaCena = $korpa->ukupna_cena + ($proizvod->cena * $validated['kolicina']);
+    $korpa->update(['ukupna_cena' => $ukupnaCena]);
+
+    // Vraćanje korpa_id u odgovoru
+    return response()->json([
+        'message' => 'Proizvod dodat u korpu.',
+        'korpa_id' => $korpa->id // Dodaj korpa_id u odgovor
+    ]);
+}
+
 
     public function removeProduct(Request $request)
     {
@@ -97,7 +103,7 @@ class KorpaController extends Controller
     {
         $request->validate([
             'proizvod_id' => 'required|exists:proizvods,id',
-            'kolicina' => 'required|integer|min:0',  // Omoguceno postavljanje kolicine na 0
+            'kolicina_proizvoda' => 'required|integer|min:0',  // Omoguceno postavljanje kolicine na 0
             'korpa_id' => 'required|exists:korpas,id', 
         ]);
 
@@ -116,14 +122,14 @@ class KorpaController extends Controller
         }
 
         // Ako je kolicina 0, uklanjamo proizvod iz korpe
-        if ($request->kolicina == 0) {
+        /*if ($request->kolicina_proizvoda == 0) {
             $proizvodKorpa->delete();
             $this->updateTotalPrice($korpa);
             return response()->json(['message' => 'Proizvod je uklonjen iz korpe.']);
-        }
+        }*/
 
         $korpa->proizvodi()->updateExistingPivot($request->proizvod_id, [
-            'kolicina_proizvoda' => $request->kolicina
+            'kolicina_proizvoda' => $request->kolicina_proizvoda
         ]);
 
         $this->updateTotalPrice($korpa);

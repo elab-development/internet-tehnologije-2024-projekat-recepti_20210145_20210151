@@ -22,8 +22,8 @@ class KorpaFactory extends Factory
     {
         return [
             'user_id' => User::factory(), // Kreira korisnika za svaku korpu
-            'ukupna_cena' => $this->faker->randomFloat(2, 10, 1000), // Generiše cenu između 10 i 1000
-            'status' => $this->faker->randomElement(['aktivan', 'kompletan', 'otkazan']), // Status korpe može biti aktivna ili prazna
+            'ukupna_cena' => $this->faker->randomFloat(2, 10, 1000), // Generise cenu između 10 i 1000
+            'status' => $this->faker->randomElement(['aktivna', 'prazna']), // Status korpe moze biti aktivna ili prazna
         ];
     }
 }

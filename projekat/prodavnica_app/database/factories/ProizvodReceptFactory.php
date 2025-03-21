@@ -22,7 +22,7 @@ class ProizvodReceptFactory extends Factory
         return [
             'proizvod_id' => Proizvod::factory(), // Kreira novi proizvod ako ne postoji
             'recept_id' => Recept::factory(),    // Kreira novi recept ako ne postoji
-            'kolicina' => $this->faker->numberBetween(1, 10), // Nasumična količina između 1 i 10
+            'kolicina' => $this->faker->numberBetween(1, 10), // Nasumicna količina između 1 i 10
         ];
     }
 }
