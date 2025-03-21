@@ -121,13 +121,6 @@ class KorpaController extends Controller
             return response()->json(['message' => 'Proizvod nije u korpi.'], 404);
         }
 
-        // Ako je kolicina 0, uklanjamo proizvod iz korpe
-        /*if ($request->kolicina_proizvoda == 0) {
-            $proizvodKorpa->delete();
-            $this->updateTotalPrice($korpa);
-            return response()->json(['message' => 'Proizvod je uklonjen iz korpe.']);
-        }*/
-
         $korpa->proizvodi()->updateExistingPivot($request->proizvod_id, [
             'kolicina_proizvoda' => $request->kolicina_proizvoda
         ]);

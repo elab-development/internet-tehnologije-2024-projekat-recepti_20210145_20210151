@@ -32,58 +32,6 @@ export const CartProvider = ({ children }) => {
             console.error('Greška pri učitavanju korpe:', error);
         }
      };
-     
-     /*const addToCart = async (product) => {
-        try {
-            console.log("Proizvod koji se dodaje u korpu", product);
-    
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert("Morate biti prijavljeni da biste mogli uspešno obaviti kupovinu!");
-                return;
-            }
-    
-            const existingProduct = cart.find(item => item.pivot.proizvod_id === product.id);
-    
-            let quantity = 1;
-            if (existingProduct) {
-                quantity = existingProduct.pivot.kolicina_proizvoda + 1;
-                await updateQuantity(product.id, "increase");
-                alert("Količina proizvoda je povećana.");
-            } else {
-                // Dodavanje proizvoda direktno u state
-                setCart(prevCart => [
-                    ...prevCart,
-                    { ...product, pivot: { proizvod_id: product.id, kolicina_proizvoda: quantity } }
-                ]);
-                alert("Proizvod uspešno dodat u korpu!");
-            }
-    
-            // API poziv za dodavanje proizvoda u bazu
-            const response = await fetch('http://localhost:8000/api/korpa/add-product', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    proizvod_id: product.id,
-                    kolicina: quantity
-                })
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Uspešno dodato u bazu:", data);
-            } else {
-                console.error("Greška pri dodavanju proizvoda u bazu:", response);
-                alert("Greška pri dodavanju proizvoda u korpu.");
-            }
-    
-        } catch (error) {
-            console.error("Greška pri dodavanju proizvoda:", error);
-        }
-    };*/
     const addToCart = async (product) => {
         try {
             console.log("Proizvod koji se dodaje u korpu", product);
@@ -148,69 +96,6 @@ export const CartProvider = ({ children }) => {
         }
     };
     
-    
-     
-
-    /*const updateQuantity = async (proizvod_id, action) => {
-        try {
-            const updatedCart = [...cart];  // Kopiraj trenutni state
-            const product = updatedCart.find(item => item.pivot.proizvod_id === proizvod_id);
-            if (!product) {
-                console.error("Proizvod nije pronađen u korpi.");
-                return;
-            }
-
-            let newQuantity = action === "increase"
-                ? product.pivot.kolicina_proizvoda + 1
-                : product.pivot.kolicina_proizvoda - 1;
-
-            if (newQuantity < 1) {
-                await removeProduct(proizvod_id);
-                return;
-            }
-
-            // Ažuriraj stanje korpe koristeći prevCart za sigurnost
-            setCart(prevCart => {
-                const updatedCart = prevCart.map(item =>
-                    item.pivot.proizvod_id === proizvod_id
-                        ? { ...item, pivot: { ...item.pivot, kolicina_proizvoda: newQuantity } }
-                        : item
-                );
-                console.log("Novo stanje korpe:", updatedCart); // Provera ažuriranja state-a
-                return updatedCart;
-            });
-            
-
-            const response = await fetch('http://localhost:8000/api/korpa/update-product', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    proizvod_id: proizvod_id,
-                    kolicina_proizvoda: newQuantity,
-                    korpa_id: product.pivot.korpa_id
-                })
-            });
-            if (!response.ok) {
-                console.error("Greška pri ažuriranju količine:", response.status, await response.text());
-                return;
-            }
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Uspešno ažurirano:", data);
-                await fetchCart();  // Sinhronizuj sa serverom nakon lokalnih promena
-            } else {
-                console.error("Greška pri ažuriranju količine:", response);
-                return;
-            }
-        } catch (error) {
-            console.error("Greška pri ažuriranju količine proizvoda:", error);
-        }
-    };*/
-
     const updateQuantity = async (proizvod_id, action) => {
         try {
             const updatedCart = [...cart];  // Kopiraj trenutni state
