@@ -64,3 +64,42 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Component Tree
+
+```mermaid
+graph TD;
+  A[App] --> B[Http]
+  A[App] --> C[Models]
+  A[App] --> D[Console]
+  A[App] --> E[Middleware]
+  B --> F[Controllers]
+  F --> G[Api]
+  G --> H[ApiRegisterController]
+  G --> I[LogInController]
+  G --> J[ResetPasswordController]
+  F --> K[Controller]
+  F --> L[KorpaController]
+  F --> M[KupovinaController]
+  F --> N[ProductController]
+  F --> O[ReceptController]
+  E --> P[IsAdmin]
+  C --> Q[Korpa]
+  C --> R[Kupovina]
+  C --> S[Proizvod]
+  C --> T[ProizvodKorpa]
+  C --> U[ProizvodKupovina]
+  C --> V[ProizvodRecept]
+  C --> W[Recept]
+  C --> X[User]
+  D --> Y[Kernel]
+  R[Routes] --> Z[api.php]
+  R --> AA[console.php]
+  R --> AB[web.php]
+  V[Resources] --> AC[KorpaResource]
+  V --> AD[KupovinaResource]
+  V --> AE[ProizvodKorpaResource]
+  V --> AF[ProizvodKupovinaResource]
+  V --> AG[ProizvodReceptResource]
+  V --> AH[ProizvodResource]
+  V --> AI[ReceptResource]

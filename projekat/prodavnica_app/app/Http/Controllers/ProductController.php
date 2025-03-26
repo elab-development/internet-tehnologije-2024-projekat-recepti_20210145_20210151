@@ -112,24 +112,18 @@ public function store(Request $request)
     // Upit za pretragu
     $query = Proizvod::query();
 
-    // Pretraga na osnovu kljucne reci
     if ($kljucnaRec) {
         $query->where('naziv', 'like', "%{$kljucnaRec}%");
     }
-    // Pretraga na osnovu kategorije
     if ($kategorija) {
         $query->where('kategorija', $kategorija);
     }
-    // Pretraga na osnovu tipa
     if ($tip) {
         $query->where('tip', $tip);
     }
-    // Pretraga na osnovu min cene
     if ($cena_min !== null && is_numeric($cena_min)) {
         $query->where('cena', '>=', $cena_min);
     }
-
-    // Pretraga na osnovu max cene
     if ($cena_max !== null && is_numeric($cena_max)) {
         $query->where('cena', '<=', $cena_max);
     }

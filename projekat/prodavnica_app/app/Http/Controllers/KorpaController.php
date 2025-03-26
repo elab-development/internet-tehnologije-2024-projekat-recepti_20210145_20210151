@@ -128,8 +128,6 @@ class KorpaController extends Controller
         $this->updateTotalPrice($korpa);
         // Vrati azuriranu korpu i proizvod
         $korpa = Korpa::with('proizvodi')->find($korpa->id);
-
-
         return response()->json([
             'message' => 'Količina proizvoda uspešno ažurirana.',
             'proizvod' => $proizvodKorpa,

@@ -43,7 +43,6 @@ class ReceptController extends Controller
     } else {
         $recept->slika = asset('storage/recepti_image/default.jpg'); // Podrazumevana slika
     }
-
     // Cuvanje ispravne putanje slike u bazi
     $recept->save();
 
@@ -100,7 +99,6 @@ class ReceptController extends Controller
         'tip_jela' => 'nullable|string|in:predjelo,glavno jelo,dezert,salata',
         'per_page' => 'nullable|integer|min:1', // Validacija za broj stavki po stranici
     ]);
-
     // Kreiranje upita za pretragu
     $query = Recept::query();
 
