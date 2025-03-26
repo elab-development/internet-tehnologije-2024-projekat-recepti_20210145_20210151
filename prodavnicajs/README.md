@@ -71,4 +71,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## Backend Architecture
 
-![Component Tree](assets/component-tree-frontend.jpeg)
+![Component Tree](src/assets/component-tree-frontend.jpeg)
