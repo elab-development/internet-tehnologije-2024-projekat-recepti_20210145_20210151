@@ -1,0 +1,1473 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #111;  /* Tamna pozadina */
+  color: white;  /* Bela boja teksta kao kontrast */
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Stilovi za login stranicu */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffc1cc;
+  padding: 20px;
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.login-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.login-input:focus {
+  border-color: #ff4081;
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff4081;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #f61d69;
+}
+.register-link a {
+  text-decoration: none; /* Uklanja podvlačenje */
+  color: #2b2529; /* Svetloroze boja */
+  font-weight: bold; /* Podebljan tekst */
+  font-size: 16px; /* Prilagođena veličina */
+  margin-top: 30%;
+  text-align: center;
+}
+
+.register-link a:hover {
+  color: #ff1493; /* Tamnija nijansa roze prilikom hover efekta */
+  /* text-decoration: underline; Dodaje podvlačenje na hover */
+}
+
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+
+  .login-form {
+    padding: 20px;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .login-subtitle {
+    font-size: 1rem;
+  }
+}
+/*Stilovi za logout*/
+.navbar-item {
+  background-color: transparent; /* Prozirna pozadina */
+  color: white; /* Bela boja teksta */
+  padding: 8px 16px; /* Unutrašnji razmak */
+  font-size: 18px; /* Isto kao ostali linkovi */
+  text-align: left; /* Poravnavanje teksta levo */
+  text-decoration: none; /* Uklanja podvlačenje */
+  display: inline-block; /* Kao inline stavka */
+  cursor: pointer;
+  border: none;
+
+}
+
+/* Hover efekat za dugme */
+.logout-button:hover {
+  background-color: #f61d69;
+}
+
+
+
+/*Registracija*/
+.registration-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffc1cc;
+  padding: 20px;
+}
+
+.registration-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.registration-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.registration-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.registration-input:focus {
+  border-color: #ff4081;
+  outline: none;
+}
+
+.registration-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff4081;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.registration-button:hover {
+  background-color: #f61d69;
+}
+
+@media (max-width: 480px) {
+  .registration-container {
+    padding: 10px;
+  }
+
+  .registration-form {
+    padding: 20px;
+  }
+
+  .registration-title {
+    font-size: 1.5rem;
+  }
+
+  .registration-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* General Navbar styles */
+.navbar {
+  background-color: #333;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand a{
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none; /* Uklanja podvlačenje */
+}
+.navbar-brand a:hover {
+  color: #ff4081; /* Menja boju teksta u roze kada se pritisne */
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  margin: 0 15px;
+  position: relative;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+.navbar-item a {
+  text-decoration: none; /* Uklanja plavi podvlačeni link */
+  color: inherit; /* Nasleđuje boju iz .navbar-item */
+}
+
+.navbar-item:hover {
+  color: #ff4081;
+}
+.navbar-item a:hover {
+  color: #ff4081; /* Hover efekat za link */
+}
+
+.dropdown-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-button svg {
+  margin-left: 8px;
+}
+
+/* Stil za dugme korpe u navbaru */
+.cart-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Broj proizvoda u korpi */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 12px;
+}
+/* Korpa */
+.cart {
+  width: 80%;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Style for cart items */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cart-item p {
+  font-size: 1rem;
+  margin: 0;
+  color: #333;
+}
+
+/* Quantity control buttons */
+.cart-item div {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item button {
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cart-item button:hover {
+  background-color: #ccc;
+}
+
+.cart-item span {
+  font-size: 1.2rem;
+  margin: 0 10px;
+}
+
+/* Total price */
+h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* Message for empty cart */
+.cart p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.cart-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buy-button {
+  padding: 10px 20px;
+  background-color: #de467b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.buy-button:hover {
+  background-color: #c33f60;
+}
+
+/* Style for cart item delete button */
+.cart-item .delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cart-item .delete-btn:hover {
+  background-color: #e60000;
+}
+
+/* Adjust layout for smaller screens */
+@media (max-width: 768px) {
+  .cart {
+      width: 95%;
+      padding: 15px;
+  }
+
+  .cart-item {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .cart-item p {
+      margin: 5px 0;
+  }
+
+  .cart-item div {
+      margin-top: 10px;
+  }
+}
+
+
+/* Dropdown menu styles */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #444;
+  min-width: 150px;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  padding: 8px 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #ff4081;
+}
+
+/* Show dropdown on hover */
+.navbar-item:hover .dropdown-menu {
+  display: block;
+}
+
+/* Responzivnost za mobilne uređaje */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  .navbar-toggle {
+    display: block;
+    cursor: pointer;
+    color: white;
+  }
+
+  .navbar-menu {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+
+  .navbar-item {
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+  }
+
+  .dropdown-menu {
+    position: static;
+    background-color: #444;
+    display: block;
+    display: none;
+    padding: 0;
+    width: 100%; /* Ista širina kao i dugme za dropdown */
+    list-style: none;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px;
+    background-color: #333;
+  }
+}
+
+/* Responzivnost za šire ekrane (više od 768px) */
+@media (min-width: 769px) {
+  .navbar-menu {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .navbar-toggle {
+    display: none; /* Sakrij burger meni na širem ekranu */
+  }
+
+  .navbar-item {
+    width: auto;
+    text-align: center;
+    padding: 0;
+  }
+
+  .dropdown-menu {
+    display: none; /* Sakrij dropdown meni na početku */
+    position: absolute;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: block; /* Prikazivanje dropdown menija kad je aktivan */
+  }
+}
+
+
+
+
+/* Homepage.css */
+.homepage-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-image {
+  background: url('./assets/photos/homepage2.jpg') no-repeat center center/cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.85);  /* Manje zatamnjena slika, svetlija */
+  z-index: -1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  z-index: 5;
+}
+
+.inspiration-text {
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);  /* Suptilna senka na tekstu */
+}
+
+.start-button {
+  border: 2px solid red;
+  pointer-events: auto;
+  background-color: #ff4081;  /* Snažna ružičasta */
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  font-size: 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  /* Senka dugmeta za dublji efekat */
+  position: relative; /* Dodaj ovo da bude iznad pozadine */
+  z-index: 10;
+}
+
+.start-button:hover {
+  background-color: #e91e63;  /* Tamnija ružičasta pri hoveru */
+  transform: translateY(-3px);  /* Efekat podizanja pri hoveru */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);  /* Jača senka pri hoveru */
+}
+
+.start-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.5);  /* Fokus efekat sa svetlom ružičastom */
+}
+
+/* Responsivnost za mobilne uređaje */
+@media (max-width: 768px) {
+  .homepage-container {
+    height: auto;
+    padding: 20px;
+  }
+
+  .overlay {
+    padding: 30px;
+  }
+
+  .inspiration-text {
+    font-size: 1.8rem;
+  }
+
+  .start-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+  }
+}
+
+/*Products.css i OneProduct.css - stilovi za proizvode*/
+.all-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 20px;
+  gap: 20px;
+}
+
+/* Stil za karticu proizvoda */
+.card {
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  /*background-color: #fff;*/
+  background-color: #FFD1DC;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efekat kada se zadrži mišem */
+}
+
+/* Stil za sliku proizvoda */
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Stilovi za sadržaj unutar kartice */
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.card-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff4081;
+  margin-top: 10px;
+}
+
+/* Dugmadi za korpu */
+.btn {
+  width: calc(100% - 20px);
+  height: 40px;
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e91e63;
+}
+
+/* Responzivni dizajn: kartice proizvoda se prilagođavaju manjim ekranima */
+@media (max-width: 768px) {
+  .all-products {
+      justify-content: center;
+  }
+
+  .card {
+      width: 200px;
+  }
+}
+
+/* Dodatni stil za praznu listu proizvoda */
+p {
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+}
+
+/* Kupovina */
+.purchase {
+  font-family: Arial, sans-serif;
+  background-color: #ffe6f1; /* Svetlo roze pozadina stranice */
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 50px auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Naslov */
+.purchase h2 {
+  color: #d24d6f; /* Tamnija roze boja za naslov */
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Tekst koji prikazuje ukupnu cenu */
+.purchase p {
+  font-size: 18px;
+  color: #d24d6f;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Stil za formu */
+.purchase form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Labela za unos */
+.purchase label {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Stil za input polja */
+.purchase input,
+.purchase select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #d24d6f; /* Rozikasti okvir */
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Fokus na inputima */
+.purchase input:focus,
+.purchase select:focus {
+  border-color: #f78fb3; /* Osvetljeni rozikasti okvir pri fokusu */
+  outline: none;
+}
+
+/* Greške */
+.purchase .error {
+  color: #e74c3c; /* Crvena boja za greške */
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Stil za dugme */
+.purchase button {
+  padding: 12px;
+  background-color: #de467b; /* Svetlo roze pozadina dugmeta */
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Hover efekat za dugme */
+.purchase button:hover {
+  background-color: #c33f60; /* Tamnija roze boja pri hoveru */
+}
+
+.purchase button:active {
+  background-color: #e91e63; /* Još tamnija boja kada je dugme pritisnuto */
+}
+
+
+/*Recepti*/
+ /* Stil za glavni kontejner */
+.recipes-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Naslov */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Ako nema recepata */
+.no-recipes {
+  font-size: 18px;
+  text-align: center;
+  color: #777;
+}
+
+/* Grid raspored za kartice */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Stil za svaku recept karticu */
+.recipe-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+}
+
+.recipe-card:hover {
+  transform: scale(1.05);
+}
+
+/* Slika recepta */
+.recipe-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.recipe-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Informacije o receptu */
+.recipe-info {
+  padding: 15px;
+}
+
+.recipe-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.recipe-type {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.recipe-time {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* Dugme za prikaz više */
+.view-button {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #de467b;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.view-button:hover {
+  background: #de467b;
+  color:#ee0067
+}
+
+
+/* Container za recept */
+.one-recipe-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Slika recepta */
+.one-recipe-image {
+  width: 100%;
+  height: 400px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+/* Sadržaj recepta */
+.one-recipe-content {
+  margin-top: 20px;
+}
+
+/* Naslov recepta */
+.one-recipe-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Tip jela */
+.one-recipe-type {
+  font-size: 1.2rem;
+  color: #6c6c6c;
+  margin-bottom: 8px;
+}
+
+/* Vreme pripreme */
+.one-recipe-time {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 15px;
+}
+/* Stil za ikonu vremena */
+.time-icon {
+  margin-right: 4px;  /* Razmak između ikone i teksta */
+  color: #f3127f;     /* Zlato ili neka lepa boja koja odgovara dizajnu */
+  font-size: 1.5rem;  /* Povećanje veličine ikone */
+  vertical-align: middle; /* Poravnanje ikone sa tekstom */
+}
+
+/* Podnaslov za opis pripreme */
+.one-recipe-subtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-top: 25px;
+}
+
+/* Opis pripreme */
+.one-recipe-description {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.8;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 30%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.yes-button {
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.no-button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-to-cart-icon {
+  cursor: pointer;
+  color: #6c5c69;
+  font-size: 20px;
+  margin-left: 10px;
+  transition: color 0.3s ease;
+}
+
+.add-to-cart-icon:hover {
+  color: #2f242a;
+}
+
+
+.search-container, .filter-container {
+  margin: 20px 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-input, .filter-input, .filter-select {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+/*.search-button, .filter-button {
+  padding: 8px 12px;
+  background-color: #83656f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover, .filter-button:hover {
+  background-color: #d1b6bf;
+}*/
+
+.in-stock-label {
+  margin-left: 10px;
+}
+
+.in-stock-checkbox {
+  margin-left: 5px;
+}
+
+/* Loading stil */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+}
+/* Poboljšanje izgleda liste proizvoda */
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0;
+}
+
+/* Stil za praznu listu proizvoda */
+.empty-products {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  margin-top: 20px;
+}
+/* Stilovi za proizvode */
+.products-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Stavka proizvoda */
+.product-item {
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f8d7e0; /* Svetloroza pozadina */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover efekat za proizvode */
+.product-item:hover {
+  background-color: #f1b3c1; /* Tamnija svetloroza */
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Informacije o proizvodu */
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Naziv proizvoda */
+.product-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Količina proizvoda - desno poravnato */
+.product-quantity {
+  font-size: 1rem;
+  color: #777;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+/*Paginacija*/
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #fc4082;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  transition: background 0.3s;
+}
+
+.pagination button:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+.pagination button:hover {
+  background-color: #ee0067;
+}
+
+.pagination span {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+
+
+
+
+/*PRETRAGA RECEPATA*/
+.recipe-finder-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background-color: #ffc1cc;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fff;
+  color: #000; /* Crni tekst */
+}
+
+.input-group button {
+  padding: 10px 15px;
+  /*background: #ff69b4;  Roze dugme */
+  background: #515151;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.input-group button:hover {
+  /*background: #ff1493;  Tamnija roze boja */
+  background: #3b3b3b;
+  transform: scale(1.05);
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffe4ec; /* Svetlo roze pozadina */
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 8px;
+  color: #000;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #ff1493; /* Tamno roze X */
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.remove-btn:hover {
+  color: #ff69b4;
+}
+
+.find-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ff1493; /* Tamna roze */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.find-btn:hover {
+  background: #f3138a; /* Još tamnija roze */
+  transform: scale(1.05);
+}
+
+.find-recipes-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: #ffe4ec; /* Svetlo roze */
+  border-radius: 12px;
+}
+.find-recipes-container h2 {
+  color:#000;
+}
+.find-recipe-card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #ff1493; /* Roze akcenat sa leve strane */
+}
+
+.find-recipe-card h3 {
+  margin: 0;
+  color: #0000009e; /* Tamno roze naslovi */
+}
+
+.find-recipe-card p {
+  margin: 5px 0;
+  color: #333; /* Tamno siva za bolju čitljivost */
+}
+
+.find-recipe-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+.find-details-button {
+  display: inline-block;
+  background-color: #515151;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.find-details-button:hover {
+  background-color: #3b3b3b;;
+  color:white;
+}
+
+/* Osnovni stil za dropdown */
+.find-dropdown {
+  font-family: Arial, sans-serif;
+  margin: 20px 0;
+}
+
+/* Stil za labelu */
+.find-dropdown label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Stil za select element */
+.find-dropdown select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: #f8d7da; /* Roza pozadina */
+  color: #000; /* Crna boja teksta */
+  transition: all 0.3s ease;
+}
+
+/* Stil za hover efekat na select */
+.find-dropdown select:hover {
+  background-color: #f1c6d1; /* Tamniji roze ton */
+}
+
+/* Stil za placeholder (prvi option element) */
+.find-dropdown option:first-child {
+  color: #ffe4ec; /* Siva boja za placeholder */
+}
+
+/* Stil za option elemente */
+.find-dropdown option {
+  background-color: #ffe4ec; /* Roza pozadina */
+  color: #000; /* Crna boja teksta */
+}
+
+/* Stil za selektovani option */
+.find-dropdown select:focus {
+  border-color: #000000; /* Roza border pri fokusu */
+  outline: none;
+}
+
+
+.back-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.back-button:hover {
+  background-color: #45a049;
+}
+
+
+/*RESETOVANJE LOZINKE*/
+/* ResetPassword.css */
+.reset-password-container {
+  max-width: 400px;
+  margin:50px auto 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.reset-password-container h2 {
+  text-align: center;
+}
+
+.reset-password-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.reset-password-container input {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.reset-password-container button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.reset-password-container button:hover {
+  background-color: #45a049;
+}
